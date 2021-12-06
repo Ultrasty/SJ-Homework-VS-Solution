@@ -36,6 +36,7 @@ int main()
 		int ret = display_menu();
 		if (ret == -1)
 			break;
+		play(ret);
 	}
 
 }

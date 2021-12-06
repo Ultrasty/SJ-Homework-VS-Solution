@@ -32,7 +32,15 @@ int display_menu()
 	cout << "---------------------------------" << endl;
 	cout << "[ÇëÑ¡Ôñ:] ";
 
-	ret = _getche();
+	while (1) {
+		ret = _getche();
+		if (ret >= '0' && ret <= '9') {
+			break;
+		}
+		else
+			cout << "\b \b";
+	}
+	
 
 	cout << endl << endl << endl;
 
@@ -40,7 +48,7 @@ int display_menu()
 		return -1;
 	}
 	else {
-		play(ret);
+		return ret;
 	}
 
 	return 0;

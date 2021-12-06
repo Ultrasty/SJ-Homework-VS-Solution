@@ -3,10 +3,10 @@
 
 /* ----------------------------------------------------------------------------------
 
-     本文件功能：
+	 本文件功能：
 	1、存放被 hanoi_main.cpp 中根据菜单返回值调用的各菜单项对应的执行函数
 
-     本文件要求：
+	 本文件要求：
 	1、不允许定义外部全局变量（const及#define不在限制范围内）
 	2、允许定义静态全局变量（具体需要的数量不要超过文档显示，全局变量的使用准则是：少用、慎用、能不用尽量不用）
 	3、静态局部变量的数量不限制，但使用准则也是：少用、慎用、能不用尽量不用
@@ -20,7 +20,21 @@ static int stackB[] = { 0,0,0,0,0,0,0,0,0,0 };
 static int stackC[] = { 0,0,0,0,0,0,0,0,0,0 };
 static int A = 0, B = 0, C = 0;
 static int delay;
-static int display_stack;
+
+void clear_global()
+{
+	countt = 0;
+
+	for (int i = 0; i < 10; i++) {
+		stackA[i] = 0;
+		stackB[i] = 0;
+		stackC[i] = 0;
+	}
+
+	A = 0;
+	B = 0;
+	C = 0;
+}
 
 void delay_sometime()
 {
@@ -44,7 +58,7 @@ void delay_sometime()
 	}
 }
 
-void get_input(int *n, char *src, char *tmp, char *dst)
+void get_input(int* n, char* src, char* tmp, char* dst, int* display_stack, char choice)
 {
 
 	char c;
@@ -131,47 +145,52 @@ void get_input(int *n, char *src, char *tmp, char *dst)
 		}
 	}
 
-	while (1) {
-		cout << "请输入移动速度(0-5: 0-按回车单步演示 1-延时最长 5-延时最短)" << endl;
-		cin >> delay;
-		if (cin.fail()) {
-			cin.clear();
-			while ((c = getchar()) != '\n' && c != EOF)
-				;
-			continue;
-		}
-		else if (delay < 0 || delay > 5) {
-			while ((c = getchar()) != '\n' && c != EOF)
-				;
-			continue;
-		}
-		else {
-			while ((c = getchar()) != '\n' && c != EOF)
-				;
-			break;
-		}
-	}
 
-	while (1) {
-		cout << "请输入是否显示内部数组值(0-不显示 1-显示)" << endl;
-		cin >> display_stack;
-		if (cin.fail()) {
-			cin.clear();
-			while ((c = getchar()) != '\n' && c != EOF)
-				;
-			continue;
+	//额外的输入 用参数控制
+	if (choice == '4') {
+		while (1) {
+			cout << "请输入移动速度(0-5: 0-按回车单步演示 1-延时最长 5-延时最短)" << endl;
+			cin >> delay;
+			if (cin.fail()) {
+				cin.clear();
+				while ((c = getchar()) != '\n' && c != EOF)
+					;
+				continue;
+			}
+			else if (delay < 0 || delay > 5) {
+				while ((c = getchar()) != '\n' && c != EOF)
+					;
+				continue;
+			}
+			else {
+				while ((c = getchar()) != '\n' && c != EOF)
+					;
+				break;
+			}
 		}
-		else if (display_stack < 0 || display_stack > 1) {
-			while ((c = getchar()) != '\n' && c != EOF)
-				;
-			continue;
-		}
-		else {
-			while ((c = getchar()) != '\n' && c != EOF)
-				;
-			break;
+
+		while (1) {
+			cout << "请输入是否显示内部数组值(0-不显示 1-显示)" << endl;
+			cin >> *display_stack;
+			if (cin.fail()) {
+				cin.clear();
+				while ((c = getchar()) != '\n' && c != EOF)
+					;
+				continue;
+			}
+			else if (*display_stack < 0 || *display_stack > 1) {
+				while ((c = getchar()) != '\n' && c != EOF)
+					;
+				continue;
+			}
+			else {
+				while ((c = getchar()) != '\n' && c != EOF)
+					;
+				break;
+			}
 		}
 	}
+	
 
 	*tmp = 3 * 'B' - *src - *dst;
 
@@ -311,56 +330,94 @@ void print_stack_vertical()
 	delay_sometime();
 }
 
-void move(int n,char src,char tmp,char dst,int way) 
+void move(int n, char src, char tmp, char dst, int display_stack, char way)
 {
-	print_step(n, src, dst);
-	if (display_stack)
-		print_stack();
-	print_stack_vertical();
+	if (way == '1') {
+		cout << n << "# " << src << "---->" << dst << endl;
+	}
+	if (way == '4') {
+		print_step(n, src, dst);
+		if (display_stack)
+			print_stack();
+		print_stack_vertical();
+	}
 }
 
 //只用这一个递归函数
-void hanoi(int n, char src, char tmp, char dst,int way)
+void hanoi(int n, char src, char tmp, char dst, int display_stack, char way)
 {
 	if (n == 1) {
-		move(n, src, tmp, dst, way);
+		move(n, src, tmp, dst, display_stack, way);
 	}
 	else {
-		hanoi(n - 1, src, dst, tmp, way);
-		move(n, src, tmp, dst, way);
-		hanoi(n - 1, tmp, src, dst, way);
+		hanoi(n - 1, src, dst, tmp, display_stack, way);
+		move(n, src, tmp, dst, display_stack, way);
+		hanoi(n - 1, tmp, src, dst, display_stack, way);
 	}
 }
 
 
-void play(char choice) 
+void play(char choice)
 {
 	int n;
 	char src, tmp, dst;
-	//用于清空缓冲区的临时变量
+	int display_stack;
 
+	clear_global();
+	get_input(&n, &src, &tmp, &dst, &display_stack, choice);
 
-	
-	get_input(&n, &src, &tmp, &dst);
-
-
-	cct_cls();
-	cout << "从 " << src << " 移动到 " << dst << "，共 " << n << " 层，延时设置为 " << delay << "，" << (display_stack ? "" : "不") << "显示内部数组值" << endl;
-	cout << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl;
-	cout << "         =========================" << endl;
-	cout << "           A         B         C" << endl;
-	cout << endl << endl << endl;
-
-	cct_gotoxy(0, 17);
-
-
-	if (display_stack) {
-		cout << "初始:                ";
-		print_stack();
+	if (choice == '1') {
+		hanoi(n, src, tmp, dst, display_stack, choice);
 	}
 
-	print_stack_vertical();
-	hanoi(n, src, tmp, dst,1);
+	if (choice == '2') {
 
-	cct_gotoxy(0, 27);
+	}
+
+	if (choice == '3') {
+
+	}
+
+	if (choice == '4') {
+		cct_cls();
+		cout << "从 " << src << " 移动到 " << dst << "，共 " << n << " 层，延时设置为 " << delay << "，" << (display_stack ? "" : "不") << "显示内部数组值" << endl;
+		cout << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl;
+		cout << "         =========================" << endl;
+		cout << "           A         B         C" << endl;
+		cout << endl << endl << endl;
+
+		cct_gotoxy(0, 17);
+
+
+		if (display_stack) {
+			cout << "初始:                ";
+			print_stack();
+		}
+
+		print_stack_vertical();
+		hanoi(n, src, tmp, dst, display_stack, choice);
+	}
+
+	if (choice == '5') {
+
+	}
+
+	if (choice == '6') {
+
+	}
+
+	if (choice == '7') {
+
+	}
+
+	if (choice == '8') {
+
+	}
+
+	if (choice == '9') {
+
+	}
+
+	cout << endl;
+	system("pause");
 }

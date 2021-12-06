@@ -17,5 +17,5 @@ using namespace std;
 
 void play(char choice);
 int display_menu();
-void get_input(int *n, char *src, char *tmp, char *dst);
 void delay_sometime();
+void clear_global();
