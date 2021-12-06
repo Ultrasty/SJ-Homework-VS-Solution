@@ -19,8 +19,182 @@ static int stackA[] = { 0,0,0,0,0,0,0,0,0,0 };
 static int stackB[] = { 0,0,0,0,0,0,0,0,0,0 };
 static int stackC[] = { 0,0,0,0,0,0,0,0,0,0 };
 static int A = 0, B = 0, C = 0;
-static int delay = 50;
+static int delay;
 static int display_stack;
+
+void delay_sometime()
+{
+	if (delay == 0) {
+		_getch();
+	}
+	else if (delay == 1) {
+		Sleep(2000);
+	}
+	else if (delay == 2) {
+		Sleep(1000);
+	}
+	else if (delay == 3) {
+		Sleep(500);
+	}
+	else if (delay == 4) {
+		Sleep(200);
+	}
+	else if (delay == 5) {
+		Sleep(50);
+	}
+}
+
+void get_input(int *n, char *src, char *tmp, char *dst)
+{
+
+	char c;
+	while (1) {
+		cout << "请输入汉诺塔的层数(1-10)：" << endl;
+		cin >> *n;
+
+		if (cin.fail()) {
+			cin.clear();
+			while ((c = getchar()) != '\n' && c != EOF)
+				;
+			continue;
+		}
+		else if (*n < 1 || *n>10) {
+			while ((c = getchar()) != '\n' && c != EOF)
+				;
+			continue;
+		}
+		else {
+			while ((c = getchar()) != '\n' && c != EOF)
+				;
+			break;
+		}
+
+	}
+
+	while (1) {
+		cout << "请输入起始柱(A-C)：" << endl;
+		cin >> *src;
+
+		//转为大写
+		if (*src == 'a' || *src == 'b' || *src == 'c') {
+			*src -= 0x20;
+		}
+
+		if (cin.fail()) {
+			cin.clear();
+			while ((c = getchar()) != '\n' && c != EOF)
+				;
+			continue;
+		}
+		else if (*src < 'A' || *src>'C') {
+			while ((c = getchar()) != '\n' && c != EOF)
+				;
+			continue;
+		}
+		else {
+			while ((c = getchar()) != '\n' && c != EOF)
+				;
+			break;
+		}
+	}
+
+	while (1) {
+		cout << "请输入目标柱(A-C)：" << endl;
+		cin >> *dst;
+
+		//转为大写
+		if (*dst == 'a' || *dst == 'b' || *dst == 'c') {
+			*dst -= 0x20;
+		}
+
+		if (cin.fail()) {
+			cin.clear();
+			while ((c = getchar()) != '\n' && c != EOF)
+				;
+			continue;
+		}
+		else if (*dst < 'A' || *dst>'C') {
+			while ((c = getchar()) != '\n' && c != EOF)
+				;
+			continue;
+		}
+		else if (*dst == *src) {
+			cout << "目标柱(" << *dst << ")不能与起始柱(" << *src << ")相同" << endl;
+			while ((c = getchar()) != '\n' && c != EOF)
+				;
+			continue;
+		}
+		else {
+			while ((c = getchar()) != '\n' && c != EOF)
+				;
+			break;
+		}
+	}
+
+	while (1) {
+		cout << "请输入移动速度(0-5: 0-按回车单步演示 1-延时最长 5-延时最短)" << endl;
+		cin >> delay;
+		if (cin.fail()) {
+			cin.clear();
+			while ((c = getchar()) != '\n' && c != EOF)
+				;
+			continue;
+		}
+		else if (delay < 0 || delay > 5) {
+			while ((c = getchar()) != '\n' && c != EOF)
+				;
+			continue;
+		}
+		else {
+			while ((c = getchar()) != '\n' && c != EOF)
+				;
+			break;
+		}
+	}
+
+	while (1) {
+		cout << "请输入是否显示内部数组值(0-不显示 1-显示)" << endl;
+		cin >> display_stack;
+		if (cin.fail()) {
+			cin.clear();
+			while ((c = getchar()) != '\n' && c != EOF)
+				;
+			continue;
+		}
+		else if (display_stack < 0 || display_stack > 1) {
+			while ((c = getchar()) != '\n' && c != EOF)
+				;
+			continue;
+		}
+		else {
+			while ((c = getchar()) != '\n' && c != EOF)
+				;
+			break;
+		}
+	}
+
+	*tmp = 3 * 'B' - *src - *dst;
+
+	//初始化栈
+	if (*src == 'A') {
+		for (int i = 0; i < *n; i++) {
+			stackA[i] = *n - i;
+		}
+		A = *n;
+	}
+	if (*src == 'B') {
+		for (int i = 0; i < *n; i++) {
+			stackB[i] = *n - i;
+		}
+		B = *n;
+	}
+	if (*src == 'C') {
+		for (int i = 0; i < *n; i++) {
+			stackC[i] = *n - i;
+		}
+		C = *n;
+	}
+}
 
 void push(char i, int j)
 {
@@ -93,24 +267,7 @@ void print_stack()
 			cout << "  ";
 	}
 	cout << endl;
-	if (delay == 0) {
-		_getch();
-	}
-	else if (delay == 1) {
-		Sleep(2000);
-	}
-	else if (delay == 2) {
-		Sleep(1000);
-	}
-	else if (delay == 3) {
-		Sleep(500);
-	}
-	else if (delay == 4) {
-		Sleep(200);
-	}
-	else if (delay == 5) {
-		Sleep(50);
-	}
+	delay_sometime();
 }
 
 void print_step(int n, char src, char dst)
@@ -151,24 +308,7 @@ void print_stack_vertical()
 		else
 			cout << " ";
 	}
-	if (delay == 0) {
-		_getch();
-	}
-	else if (delay == 1) {
-		Sleep(2000);
-	}
-	else if (delay == 2) {
-		Sleep(1000);
-	}
-	else if (delay == 3) {
-		Sleep(500);
-	}
-	else if (delay == 4) {
-		Sleep(200);
-	}
-	else if (delay == 5) {
-		Sleep(50);
-	}
+	delay_sometime();
 }
 
 void move(int n,char src,char tmp,char dst,int way) 
@@ -179,6 +319,7 @@ void move(int n,char src,char tmp,char dst,int way)
 	print_stack_vertical();
 }
 
+//只用这一个递归函数
 void hanoi(int n, char src, char tmp, char dst,int way)
 {
 	if (n == 1) {
@@ -192,160 +333,15 @@ void hanoi(int n, char src, char tmp, char dst,int way)
 }
 
 
-void play() 
+void play(char choice) 
 {
 	int n;
 	char src, tmp, dst;
 	//用于清空缓冲区的临时变量
-	char c;
 
-	while (1) {
-		cout << "请输入汉诺塔的层数(1-10)：" << endl;
-		cin >> n;
 
-		if (cin.fail()) {
-			cin.clear();
-			while ((c = getchar()) != '\n' && c != EOF)
-				;
-			continue;
-		}
-		else if (n < 1 || n>10) {
-			while ((c = getchar()) != '\n' && c != EOF)
-				;
-			continue;
-		}
-		else {
-			while ((c = getchar()) != '\n' && c != EOF)
-				;
-			break;
-		}
-
-	}
-
-	while (1) {
-		cout << "请输入起始柱(A-C)：" << endl;
-		cin >> src;
-
-		//转为大写
-		if (src == 'a' || src == 'b' || src == 'c') {
-			src -= 0x20;
-		}
-
-		if (cin.fail()) {
-			cin.clear();
-			while ((c = getchar()) != '\n' && c != EOF)
-				;
-			continue;
-		}
-		else if (src < 'A' || src>'C') {
-			while ((c = getchar()) != '\n' && c != EOF)
-				;
-			continue;
-		}
-		else {
-			while ((c = getchar()) != '\n' && c != EOF)
-				;
-			break;
-		}
-	}
-
-	while (1) {
-		cout << "请输入目标柱(A-C)：" << endl;
-		cin >> dst;
-
-		//转为大写
-		if (dst == 'a' || dst == 'b' || dst == 'c') {
-			dst -= 0x20;
-		}
-
-		if (cin.fail()) {
-			cin.clear();
-			while ((c = getchar()) != '\n' && c != EOF)
-				;
-			continue;
-		}
-		else if (dst < 'A' || dst>'C') {
-			while ((c = getchar()) != '\n' && c != EOF)
-				;
-			continue;
-		}
-		else if (dst == src) {
-			cout << "目标柱(" << dst << ")不能与起始柱(" << src << ")相同" << endl;
-			while ((c = getchar()) != '\n' && c != EOF)
-				;
-			continue;
-		}
-		else {
-			while ((c = getchar()) != '\n' && c != EOF)
-				;
-			break;
-		}
-	}
-
-	while (1) {
-		cout << "请输入移动速度(0-5: 0-按回车单步演示 1-延时最长 5-延时最短)" << endl;
-		cin >> delay;
-		if (cin.fail()) {
-			cin.clear();
-			while ((c = getchar()) != '\n' && c != EOF)
-				;
-			continue;
-		}
-		else if (delay < 0 || delay > 5) {
-			while ((c = getchar()) != '\n' && c != EOF)
-				;
-			continue;
-		}
-		else {
-			while ((c = getchar()) != '\n' && c != EOF)
-				;
-			break;
-		}
-	}
-
-	while (1) {
-		cout << "请输入是否显示内部数组值(0-不显示 1-显示)" << endl;
-		cin >> display_stack;
-		if (cin.fail()) {
-			cin.clear();
-			while ((c = getchar()) != '\n' && c != EOF)
-				;
-			continue;
-		}
-		else if (display_stack < 0 || display_stack > 1) {
-			while ((c = getchar()) != '\n' && c != EOF)
-				;
-			continue;
-		}
-		else {
-			while ((c = getchar()) != '\n' && c != EOF)
-				;
-			break;
-		}
-	}
-
-	tmp = 3 * 'B' - src - dst;
-
-	//初始化栈
-	if (src == 'A') {
-		for (int i = 0; i < n; i++) {
-			stackA[i] = n - i;
-		}
-		A = n;
-	}
-	if (src == 'B') {
-		for (int i = 0; i < n; i++) {
-			stackB[i] = n - i;
-		}
-		B = n;
-	}
-	if (src == 'C') {
-		for (int i = 0; i < n; i++) {
-			stackC[i] = n - i;
-		}
-		C = n;
-	}
-
+	
+	get_input(&n, &src, &tmp, &dst);
 
 
 	cct_cls();
@@ -362,6 +358,7 @@ void play()
 		cout << "初始:                ";
 		print_stack();
 	}
+
 	print_stack_vertical();
 	hanoi(n, src, tmp, dst,1);
 

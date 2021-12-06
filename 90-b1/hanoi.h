@@ -15,5 +15,7 @@ using namespace std;
    ------------------------------------------------------------------------------------------------------ */
 
 
-void play();
+void play(char choice);
 int display_menu();
+void get_input(int *n, char *src, char *tmp, char *dst);
+void delay_sometime();

@@ -16,6 +16,7 @@
 
 int display_menu() 
 {
+	char ret;
 	cct_cls();
 	cout << "---------------------------------" << endl;
 	cout << "1.基本解" << endl;
@@ -31,10 +32,16 @@ int display_menu()
 	cout << "---------------------------------" << endl;
 	cout << "[请选择:] ";
 
-	play();
+	ret = _getche();
 
-	cout << endl;
-	system("pause");
+	cout << endl << endl << endl;
+
+	if (ret == '0') {
+		return -1;
+	}
+	else {
+		play(ret);
+	}
 
 	return 0;
 }

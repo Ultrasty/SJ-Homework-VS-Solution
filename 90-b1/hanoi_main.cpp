@@ -38,6 +38,4 @@ int main()
 			break;
 	}
 
-	
-
 }
