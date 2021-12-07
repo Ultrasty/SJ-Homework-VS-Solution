@@ -249,9 +249,12 @@ int pop(char i)
 	return temp;
 }
 
-void print_stack()
+void print_stack(char choice)
 {
-	cct_gotoxy(20, 17);
+	if (choice == '4') {
+		cct_gotoxy(20, 17);
+	}
+	
 	cout << " A:";
 	for (int i = 0; i < 10; i++) {
 		if (stackA[i] == 10)
@@ -286,13 +289,18 @@ void print_stack()
 			cout << "  ";
 	}
 	cout << endl;
-	delay_sometime();
+	if (choice == '4') {
+		delay_sometime();
+	}
+	
 }
 
-void print_step(int n, char src, char dst)
+void print_step(int n, char src, char dst,char choice)
 {
-	cct_gotoxy(0, 17);
-	countt++;
+	if (choice == '4') {
+		cct_gotoxy(0, 17);
+	}
+	
 	cout << "第" << setfill(' ') << setw(4) << countt << " 步(";
 	if (n < 10) {
 		cout << " ";
@@ -332,13 +340,21 @@ void print_stack_vertical()
 
 void move(int n, char src, char tmp, char dst, int display_stack, char way)
 {
+	countt++;
 	if (way == '1') {
 		cout << n << "# " << src << "---->" << dst << endl;
 	}
+	if (way == '2') {
+		cout << "第" << setfill(' ') << setw(4) << countt << " 步(" << setw(2) << n << "#: " << src << "-->" << dst << ")" << endl;
+	}
+	if (way == '3') {
+		print_step(n, src, dst,way);
+		print_stack(way);
+	}
 	if (way == '4') {
-		print_step(n, src, dst);
+		print_step(n, src, dst,way);
 		if (display_stack)
-			print_stack();
+			print_stack(way);
 		print_stack_vertical();
 	}
 }
@@ -371,11 +387,11 @@ void play(char choice)
 	}
 
 	if (choice == '2') {
-
+		hanoi(n, src, tmp, dst, display_stack, choice);
 	}
 
 	if (choice == '3') {
-
+		hanoi(n, src, tmp, dst, display_stack, choice);
 	}
 
 	if (choice == '4') {
@@ -391,7 +407,7 @@ void play(char choice)
 
 		if (display_stack) {
 			cout << "初始:                ";
-			print_stack();
+			print_stack(choice);
 		}
 
 		print_stack_vertical();
