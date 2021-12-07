@@ -21,6 +21,22 @@ static int stackC[] = { 0,0,0,0,0,0,0,0,0,0 };
 static int A = 0, B = 0, C = 0;
 static int delay;
 
+void draw_column()
+{
+	cct_showch(0, 15, ' ', COLOR_YELLOW, COLOR_YELLOW, 25);
+	cct_showch(45, 15, ' ', COLOR_YELLOW, COLOR_YELLOW, 25);
+	cct_showch(90, 15, ' ', COLOR_YELLOW, COLOR_YELLOW, 25);
+	delay = 5;
+	for (int i = 0; i < 3; i++) {
+		for (int j = 14; j >= 5; j--) {
+			cct_showch(i*45 + 12 , j, ' ', COLOR_YELLOW, COLOR_YELLOW, 1);
+			delay_sometime();
+		}
+	}
+	cct_gotoxy(0, 30);
+}
+
+//重置全局变量
 void clear_global()
 {
 	countt = 0;
@@ -36,6 +52,7 @@ void clear_global()
 	C = 0;
 }
 
+//延时
 void delay_sometime()
 {
 	if (delay == 0) {
@@ -58,6 +75,7 @@ void delay_sometime()
 	}
 }
 
+//输入
 void get_input(int* n, char* src, char* tmp, char* dst, int* display_stack, char choice)
 {
 
@@ -249,6 +267,7 @@ int pop(char i)
 	return temp;
 }
 
+//横向打印stack数组内容
 void print_stack(char choice)
 {
 	if (choice == '4') {
@@ -295,6 +314,7 @@ void print_stack(char choice)
 	
 }
 
+//打印第几步
 void print_step(int n, char src, char dst,char choice)
 {
 	if (choice == '4') {
@@ -309,7 +329,7 @@ void print_step(int n, char src, char dst,char choice)
 	push(dst, pop(src));
 }
 
-//竖向打印数组
+//竖向打印stack数组内容
 void print_stack_vertical()
 {
 	int x = 11;
@@ -338,6 +358,7 @@ void print_stack_vertical()
 	delay_sometime();
 }
 
+//移动
 void move(int n, char src, char tmp, char dst, int display_stack, char way)
 {
 	countt++;
@@ -372,7 +393,7 @@ void hanoi(int n, char src, char tmp, char dst, int display_stack, char way)
 	}
 }
 
-
+//被main调用，并传入choice
 void play(char choice)
 {
 	int n;
@@ -380,7 +401,11 @@ void play(char choice)
 	int display_stack;
 
 	clear_global();
-	get_input(&n, &src, &tmp, &dst, &display_stack, choice);
+
+	if (choice != '5') {
+		get_input(&n, &src, &tmp, &dst, &display_stack, choice);
+	}
+	
 
 	if (choice == '1') {
 		hanoi(n, src, tmp, dst, display_stack, choice);
@@ -415,7 +440,8 @@ void play(char choice)
 	}
 
 	if (choice == '5') {
-
+		cct_cls();
+		draw_column();
 	}
 
 	if (choice == '6') {
@@ -434,6 +460,7 @@ void play(char choice)
 
 	}
 
+	cct_setcolor();
 	cout << endl;
 	system("pause");
 }
