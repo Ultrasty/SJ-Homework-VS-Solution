@@ -33,7 +33,6 @@ void draw_column()
 			delay_sometime();
 		}
 	}
-	cct_gotoxy(0, 30);
 }
 
 //重置全局变量
@@ -406,16 +405,7 @@ void play(char choice)
 		get_input(&n, &src, &tmp, &dst, &display_stack, choice);
 	}
 	
-
-	if (choice == '1') {
-		hanoi(n, src, tmp, dst, display_stack, choice);
-	}
-
-	if (choice == '2') {
-		hanoi(n, src, tmp, dst, display_stack, choice);
-	}
-
-	if (choice == '3') {
+	if (choice == '1' || choice == '2' || choice == '3') {
 		hanoi(n, src, tmp, dst, display_stack, choice);
 	}
 
@@ -442,10 +432,18 @@ void play(char choice)
 	if (choice == '5') {
 		cct_cls();
 		draw_column();
+		cct_gotoxy(0, 30);
 	}
 
 	if (choice == '6') {
-
+		cct_cls();
+		draw_column();
+		for (int i = n; i >=1; i--) {
+			delay = 5;
+			delay_sometime();
+			cct_showch((src - 'A') * 45  + 12 - i, 14 - (n - i),' ', i, i, 2 * i + 1);
+		}
+		cct_gotoxy(0, 30);
 	}
 
 	if (choice == '7') {
