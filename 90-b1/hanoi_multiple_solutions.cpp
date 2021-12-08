@@ -358,7 +358,7 @@ void print_stack_vertical()
 }
 
 
-void horizontal_move(int n, char src, char tmp, char dst, int display_stack, char way)
+void horizontal_move(int n, char src, char tmp, char dst, char way)
 {
 	int stack_pointer[] = { A,B,C };
 	int start_x, start_y = 4;
@@ -368,7 +368,7 @@ void horizontal_move(int n, char src, char tmp, char dst, int display_stack, cha
 	end_x = (dst - 'A') * 45 + 12;
 
 	int i = start_x;
-	int direction = dst - src ? 1 : -1;
+	int direction = dst - src > 0 ? 1 : -1;
 	Sleep(100);
 	while (1) {
 		cct_showch(i - n, start_y, ' ', n, n, 2 * n + 1);
@@ -384,7 +384,7 @@ void horizontal_move(int n, char src, char tmp, char dst, int display_stack, cha
 	}
 }
 
-void vertical_move(int n, char src, char tmp, char dst, int display_stack, char way ,int up)
+void vertical_move(int n, char src, char tmp, char dst, char way ,int up)
 {
 	int stack_pointer[] = { A,B,C };
 	int start_x, start_y;
@@ -409,7 +409,7 @@ void vertical_move(int n, char src, char tmp, char dst, int display_stack, char 
 	if (up == 0) {
 		end_x = (dst - 'A') * 45 + 12;
 		start_y = 4;
-		end_y = 15 - stack_pointer[dst - 'A'];
+		end_y = 14 - stack_pointer[dst - 'A'];
 
 		for (int i = start_y; i <= end_y; i++) {
 			cct_showch(end_x - n, i, ' ', n, n, 2 * n + 1);
@@ -444,7 +444,10 @@ void move(int n, char src, char tmp, char dst, int display_stack, char way)
 		print_stack_vertical();
 	}
 	if (way == '8') {
-		
+		vertical_move(n, src, tmp, dst, way, 1);
+		horizontal_move(n, src, tmp, dst, way);
+		vertical_move(n, src, tmp, dst, way, 0);
+		push(dst, pop(src));
 	}
 }
 
@@ -527,10 +530,9 @@ void play(char choice)
 			delay_sometime();
 			cct_showch((src - 'A') * 45 + 12 - i, 14 - (n - i), ' ', i, i, 2 * i + 1);
 		}
+
+		hanoi(n, src, tmp, dst, 1, choice);
 		cct_gotoxy(0, 30);
-		vertical_move(1, src, tmp, dst, 1, '1', 1);
-		horizontal_move(1, src, tmp, dst, 1, '1');
-		vertical_move(1, src, tmp, dst, 1, '1', 0);
 	}
 
 	if (choice == '9') {
