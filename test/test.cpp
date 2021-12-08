@@ -1,14 +1,12 @@
 
 #include <iostream>
-#include"test.h"
 using namespace std;
 
 
 int main()
 {
-
-	cout << a << endl;
-	cout << "address: " << &a << endl;
-	mytest();
-	cout << a << endl;
+	int A = 8, B = 9;
+	int *test[] = { &A,&B };
+	*test[0] = 10;
+	cout << A;
 }

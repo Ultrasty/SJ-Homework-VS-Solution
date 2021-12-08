@@ -357,6 +357,72 @@ void print_stack_vertical()
 	delay_sometime();
 }
 
+
+void horizontal_move(int n, char src, char tmp, char dst, int display_stack, char way)
+{
+	int stack_pointer[] = { A,B,C };
+	int start_x, start_y = 4;
+	int end_x;
+	
+	start_x = (src - 'A') * 45 + 12;
+	end_x = (dst - 'A') * 45 + 12;
+
+	int i = start_x;
+	int direction = dst - src ? 1 : -1;
+	Sleep(100);
+	while (1) {
+		cct_showch(i - n, start_y, ' ', n, n, 2 * n + 1);
+		Sleep(50);
+		if (i != end_x) {
+			cct_showch(i - n, start_y, ' ', COLOR_BLACK, COLOR_WHITE, 2 * n + 1);
+			cct_showch(i, start_y, ' ', COLOR_YELLOW, COLOR_WHITE, 1);
+		}
+		if (i == end_x) {
+			break;
+		}
+		i += direction;
+	}
+}
+
+void vertical_move(int n, char src, char tmp, char dst, int display_stack, char way ,int up)
+{
+	int stack_pointer[] = { A,B,C };
+	int start_x, start_y;
+	int end_y, end_x;
+
+	Sleep(100);
+	if (up == 1) {
+		start_x = (src - 'A') * 45 + 12;
+		start_y = 15 - stack_pointer[src - 'A'];
+		end_y = 4;
+
+		for (int i = start_y; i >= end_y; i--) {
+			cct_showch(start_x - n, i, ' ', n, n, 2 * n + 1);
+			Sleep(100);
+			if (i > end_y) {
+				cct_showch(start_x - n, i, ' ', COLOR_BLACK, COLOR_WHITE, 2 * n + 1);
+				cct_showch(start_x, i, ' ', COLOR_YELLOW, COLOR_WHITE, 1);
+			}
+		}
+	}
+	
+	if (up == 0) {
+		end_x = (dst - 'A') * 45 + 12;
+		start_y = 4;
+		end_y = 15 - stack_pointer[dst - 'A'];
+
+		for (int i = start_y; i <= end_y; i++) {
+			cct_showch(end_x - n, i, ' ', n, n, 2 * n + 1);
+			Sleep(100);
+			if (i < end_y) {
+				cct_showch(end_x - n, i, ' ', COLOR_BLACK, COLOR_WHITE, 2 * n + 1);
+				cct_showch(end_x, i, ' ', COLOR_YELLOW, COLOR_WHITE, 1);
+			}
+		}
+
+	}
+}
+
 //ÒÆ¶¯
 void move(int n, char src, char tmp, char dst, int display_stack, char way)
 {
@@ -368,14 +434,17 @@ void move(int n, char src, char tmp, char dst, int display_stack, char way)
 		cout << "µÚ" << setfill(' ') << setw(4) << countt << " ²½(" << setw(2) << n << "#: " << src << "-->" << dst << ")" << endl;
 	}
 	if (way == '3') {
-		print_step(n, src, dst,way);
+		print_step(n, src, dst, way);
 		print_stack(way);
 	}
 	if (way == '4') {
-		print_step(n, src, dst,way);
+		print_step(n, src, dst, way);
 		if (display_stack)
 			print_stack(way);
 		print_stack_vertical();
+	}
+	if (way == '8') {
+		
 	}
 }
 
@@ -451,7 +520,17 @@ void play(char choice)
 	}
 
 	if (choice == '8') {
-
+		cct_cls();
+		draw_column();
+		for (int i = n; i >= 1; i--) {
+			delay = 5;
+			delay_sometime();
+			cct_showch((src - 'A') * 45 + 12 - i, 14 - (n - i), ' ', i, i, 2 * i + 1);
+		}
+		cct_gotoxy(0, 30);
+		vertical_move(1, src, tmp, dst, 1, '1', 1);
+		horizontal_move(1, src, tmp, dst, 1, '1');
+		vertical_move(1, src, tmp, dst, 1, '1', 0);
 	}
 
 	if (choice == '9') {
