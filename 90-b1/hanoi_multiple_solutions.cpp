@@ -26,11 +26,11 @@ void draw_column()
 	cct_showch(0, 15, ' ', COLOR_YELLOW, COLOR_YELLOW, 25);
 	cct_showch(45, 15, ' ', COLOR_YELLOW, COLOR_YELLOW, 25);
 	cct_showch(90, 15, ' ', COLOR_YELLOW, COLOR_YELLOW, 25);
-	delay = 5;
+
 	for (int i = 0; i < 3; i++) {
 		for (int j = 14; j >= 5; j--) {
 			cct_showch(i*45 + 12 , j, ' ', COLOR_YELLOW, COLOR_YELLOW, 1);
-			delay_sometime();
+			Sleep(20);
 		}
 	}
 }
@@ -269,8 +269,14 @@ int pop(char i)
 //横向打印stack数组内容
 void print_stack(char choice)
 {
+	cct_setcolor();
+
 	if (choice == '4') {
 		cct_gotoxy(20, 17);
+	}
+
+	if (choice == '8') {
+		cct_gotoxy(20, 37);
 	}
 	
 	cout << " A:";
@@ -316,8 +322,14 @@ void print_stack(char choice)
 //打印第几步
 void print_step(int n, char src, char dst,char choice)
 {
+	cct_setcolor();
+
 	if (choice == '4') {
 		cct_gotoxy(0, 17);
+	}
+
+	if (choice == '8') {
+		cct_gotoxy(0, 37);
 	}
 	
 	cout << "第" << setfill(' ') << setw(4) << countt << " 步(";
@@ -329,10 +341,17 @@ void print_step(int n, char src, char dst,char choice)
 }
 
 //竖向打印stack数组内容
-void print_stack_vertical()
+void print_stack_vertical(char choice)
 {
+	cct_setcolor();
+
 	int x = 11;
 	int y = 11;
+
+	if (choice == '8') {
+		y += 20;
+	}
+
 	for (int i = 0; i < 10; i++) {
 		cct_gotoxy(x, y - i);
 		if (stackA[i] != 0)
@@ -369,10 +388,10 @@ void horizontal_move(int n, char src, char tmp, char dst, char way)
 
 	int i = start_x;
 	int direction = dst - src > 0 ? 1 : -1;
-	Sleep(100);
+	Sleep(10);
 	while (1) {
 		cct_showch(i - n, start_y, ' ', n, n, 2 * n + 1);
-		Sleep(50);
+		Sleep(10);
 		if (i != end_x) {
 			cct_showch(i - n, start_y, ' ', COLOR_BLACK, COLOR_WHITE, 2 * n + 1);
 			cct_showch(i, start_y, ' ', COLOR_YELLOW, COLOR_WHITE, 1);
@@ -390,15 +409,15 @@ void vertical_move(int n, char src, char tmp, char dst, char way ,int up)
 	int start_x, start_y;
 	int end_y, end_x;
 
-	Sleep(100);
+	Sleep(30);
 	if (up == 1) {
 		start_x = (src - 'A') * 45 + 12;
-		start_y = 15 - stack_pointer[src - 'A'];
+		start_y = 14 - stack_pointer[src - 'A'];
 		end_y = 4;
 
 		for (int i = start_y; i >= end_y; i--) {
 			cct_showch(start_x - n, i, ' ', n, n, 2 * n + 1);
-			Sleep(100);
+			Sleep(30);
 			if (i > end_y) {
 				cct_showch(start_x - n, i, ' ', COLOR_BLACK, COLOR_WHITE, 2 * n + 1);
 				cct_showch(start_x, i, ' ', COLOR_YELLOW, COLOR_WHITE, 1);
@@ -409,11 +428,11 @@ void vertical_move(int n, char src, char tmp, char dst, char way ,int up)
 	if (up == 0) {
 		end_x = (dst - 'A') * 45 + 12;
 		start_y = 4;
-		end_y = 14 - stack_pointer[dst - 'A'];
+		end_y = 15 - stack_pointer[dst - 'A'];
 
 		for (int i = start_y; i <= end_y; i++) {
 			cct_showch(end_x - n, i, ' ', n, n, 2 * n + 1);
-			Sleep(100);
+			Sleep(30);
 			if (i < end_y) {
 				cct_showch(end_x - n, i, ' ', COLOR_BLACK, COLOR_WHITE, 2 * n + 1);
 				cct_showch(end_x, i, ' ', COLOR_YELLOW, COLOR_WHITE, 1);
@@ -441,13 +460,19 @@ void move(int n, char src, char tmp, char dst, int display_stack, char way)
 		print_step(n, src, dst, way);
 		if (display_stack)
 			print_stack(way);
-		print_stack_vertical();
+		print_stack_vertical(way);
 	}
 	if (way == '8') {
+
+		print_step(n, src, dst, way);
+		if (display_stack)
+			print_stack(way);
+		print_stack_vertical(way);
+
 		vertical_move(n, src, tmp, dst, way, 1);
 		horizontal_move(n, src, tmp, dst, way);
 		vertical_move(n, src, tmp, dst, way, 0);
-		push(dst, pop(src));
+		
 	}
 }
 
@@ -497,7 +522,7 @@ void play(char choice)
 			print_stack(choice);
 		}
 
-		print_stack_vertical();
+		print_stack_vertical(choice);
 		hanoi(n, src, tmp, dst, display_stack, choice);
 	}
 
@@ -510,6 +535,7 @@ void play(char choice)
 	if (choice == '6') {
 		cct_cls();
 		draw_column();
+
 		for (int i = n; i >=1; i--) {
 			delay = 5;
 			delay_sometime();
@@ -525,6 +551,12 @@ void play(char choice)
 	if (choice == '8') {
 		cct_cls();
 		draw_column();
+
+		cct_gotoxy(0, 32);
+		cct_setcolor();
+		cout << "         =========================" << endl;
+		cout << "           A         B         C" << endl;
+
 		for (int i = n; i >= 1; i--) {
 			delay = 5;
 			delay_sometime();
@@ -532,7 +564,7 @@ void play(char choice)
 		}
 
 		hanoi(n, src, tmp, dst, 1, choice);
-		cct_gotoxy(0, 30);
+		cct_gotoxy(0, 37);
 	}
 
 	if (choice == '9') {
