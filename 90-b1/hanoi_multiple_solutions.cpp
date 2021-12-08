@@ -275,8 +275,8 @@ void print_stack(char choice)
 		cct_gotoxy(20, 17);
 	}
 
-	if (choice == '8') {
-		cct_gotoxy(20, 37);
+	if (choice == '8' || choice =='7' || choice == '9') {
+		cct_gotoxy(20, 32);
 	}
 	
 	cout << " A:";
@@ -328,8 +328,8 @@ void print_step(int n, char src, char dst,char choice)
 		cct_gotoxy(0, 17);
 	}
 
-	if (choice == '8') {
-		cct_gotoxy(0, 37);
+	if (choice == '8' || choice =='7' || choice == '9') {
+		cct_gotoxy(0, 32);
 	}
 	
 	cout << "第" << setfill(' ') << setw(4) << countt << " 步(";
@@ -348,8 +348,8 @@ void print_stack_vertical(char choice)
 	int x = 11;
 	int y = 11;
 
-	if (choice == '8') {
-		y += 20;
+	if (choice == '8' || choice =='7' || choice == '9') {
+		y += 15;
 	}
 
 	for (int i = 0; i < 10; i++) {
@@ -420,7 +420,10 @@ void vertical_move(int n, char src, char tmp, char dst, char way ,int up)
 			Sleep(30);
 			if (i > end_y) {
 				cct_showch(start_x - n, i, ' ', COLOR_BLACK, COLOR_WHITE, 2 * n + 1);
-				cct_showch(start_x, i, ' ', COLOR_YELLOW, COLOR_WHITE, 1);
+				if (i != 4) {
+					cct_showch(start_x, i, ' ', COLOR_YELLOW, COLOR_WHITE, 1);
+				}
+				
 			}
 		}
 	}
@@ -435,7 +438,10 @@ void vertical_move(int n, char src, char tmp, char dst, char way ,int up)
 			Sleep(30);
 			if (i < end_y) {
 				cct_showch(end_x - n, i, ' ', COLOR_BLACK, COLOR_WHITE, 2 * n + 1);
-				cct_showch(end_x, i, ' ', COLOR_YELLOW, COLOR_WHITE, 1);
+				if (i != 4) {
+					cct_showch(end_x, i, ' ', COLOR_YELLOW, COLOR_WHITE, 1);
+				}
+				
 			}
 		}
 
@@ -462,7 +468,7 @@ void move(int n, char src, char tmp, char dst, int display_stack, char way)
 			print_stack(way);
 		print_stack_vertical(way);
 	}
-	if (way == '8') {
+	if (way == '8' || way == '7' || way =='9') {
 
 		print_step(n, src, dst, way);
 		if (display_stack)
@@ -484,8 +490,20 @@ void hanoi(int n, char src, char tmp, char dst, int display_stack, char way)
 	}
 	else {
 		hanoi(n - 1, src, dst, tmp, display_stack, way);
+		if (way == '7') {
+			return;
+		}
 		move(n, src, tmp, dst, display_stack, way);
 		hanoi(n - 1, tmp, src, dst, display_stack, way);
+	}
+}
+
+void draw_initial_plate(int n,char src)
+{
+	for (int i = n; i >= 1; i--) {
+		delay = 5;
+		delay_sometime();
+		cct_showch((src - 'A') * 45 + 12 - i, 14 - (n - i), ' ', i, i, 2 * i + 1);
 	}
 }
 
@@ -536,38 +554,105 @@ void play(char choice)
 		cct_cls();
 		draw_column();
 
-		for (int i = n; i >=1; i--) {
-			delay = 5;
-			delay_sometime();
-			cct_showch((src - 'A') * 45  + 12 - i, 14 - (n - i),' ', i, i, 2 * i + 1);
-		}
+		draw_initial_plate(n,src);
 		cct_gotoxy(0, 30);
 	}
 
-	if (choice == '7') {
-
-	}
-
-	if (choice == '8') {
+	if (choice == '8' || choice == '7') {
 		cct_cls();
 		draw_column();
 
-		cct_gotoxy(0, 32);
+		cct_gotoxy(0, 27);
 		cct_setcolor();
 		cout << "         =========================" << endl;
 		cout << "           A         B         C" << endl;
 
-		for (int i = n; i >= 1; i--) {
-			delay = 5;
-			delay_sometime();
-			cct_showch((src - 'A') * 45 + 12 - i, 14 - (n - i), ' ', i, i, 2 * i + 1);
-		}
+		draw_initial_plate(n, src);
 
 		hanoi(n, src, tmp, dst, 1, choice);
 		cct_gotoxy(0, 37);
 	}
 
 	if (choice == '9') {
+		cct_cls();
+		draw_column();
+
+		cct_gotoxy(0, 27);
+		cct_setcolor();
+		cout << "         =========================" << endl;
+		cout << "           A         B         C" << endl;
+
+		draw_initial_plate(n, src);
+		print_stack_vertical(choice);
+
+
+
+		char temp[1000];
+
+		while (1) {
+			cct_gotoxy(0, 35);
+			cct_setcolor();
+			cout << "请输入移动的柱号(命令形式：AC=A顶端的盘子移动到C，Q=退出) ：                 ";
+
+			int current_n = INT_MAX;
+			int to_n = INT_MAX;
+			cct_gotoxy(60, 35);
+			cin.getline(temp, 1000);
+			if (temp[0] == 'q' || temp[0] == 'Q') {
+				break;
+			}
+			if (temp[0] >= 'a' && temp[0] <= 'c') {
+				temp[0] -= 0x20;
+			}
+			if (temp[1] >= 'a' && temp[1] <= 'c') {
+				temp[1] -= 0x20;
+			}
+			if (temp[0] >= 'A' && temp[0] <= 'C' && temp[1] >= 'A' && temp[1] <= 'C') {
+
+				if (temp[0] == 'A' && A > 0) {
+					current_n = stackA[A - 1];
+				}
+				else if (temp[0] == 'B' && B > 0) {
+					current_n = stackB[B - 1];
+				}
+				else if (temp[0] == 'C' && C > 0) {
+					current_n = stackC[C - 1];
+				}
+				else {
+					cct_gotoxy(0, 36);
+					cct_setcolor();
+					cout << "非法移动！起始柱为空！       ";
+					continue;
+				}
+
+				if (temp[1] == 'A' && A > 0) {
+					to_n = stackA[A - 1];
+				}
+				if (temp[1] == 'B' && B > 0) {
+					to_n = stackB[B - 1];
+				}
+				if (temp[1] == 'C' && C > 0) {
+					to_n = stackC[C - 1];
+				}
+				
+				if (to_n < current_n) {
+					cct_gotoxy(0, 36);
+					cct_setcolor();
+					cout << "非法移动！大盘压小盘！        ";
+					continue;
+				}
+				else {
+					cct_gotoxy(0, 36);
+					cct_setcolor();
+					cout << "                                                      ";
+					move(current_n, temp[0], tmp, temp[1], display_stack, choice);
+				}
+				
+			}
+			
+			
+			
+		}
 
 	}
 
