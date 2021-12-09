@@ -157,7 +157,32 @@ char *tj_strncpy(char *s1, const char *s2, const int len)
 ***************************************************************************/
 int tj_strcmp(const char *s1, const char *s2)
 {
+    if (s1 == 0 && s2 == 0) {
+        return 0;
+    }
+
+    if (s1 == NULL) {
+        return -1;
+    }
+
+    if (s2 == NULL) {
+        return 1;
+    }
+
     /* 注意：函数内不允许定义任何形式的数组（包括静态数组） */
+    while (*s1 != 0 && *s2 != 0) {
+        if (*s1 != *s2) {
+            return *s1 - *s2;
+        }
+        s1++;
+        s2++;
+    }
+
+    if (*s1 == 0 && *s2 == 0) {
+        return 0;
+    }
+    else
+        return *s1 - *s2;
 
     return 0;
 }
@@ -171,7 +196,50 @@ int tj_strcmp(const char *s1, const char *s2)
 ***************************************************************************/
 int tj_strcasecmp(const char *s1, const char *s2)
 {
+    char temp1, temp2;
     /* 注意：函数内不允许定义任何形式的数组（包括静态数组） */
+    if (s1 == 0 && s2 == 0) {
+        return 0;
+    }
+
+    if (s1 == NULL) {
+        return -1;
+    }
+
+    if (s2 == NULL) {
+        return 1;
+    }
+
+    while (*s1 != 0 && *s2 != 0) {
+
+        if (*s1 >= 'A' && *s1 <= 'Z') {
+            temp1 = *s1 + 0x20;
+        }
+        else
+            temp1 = *s1;
+
+        if (*s2 >= 'A' && *s2 <= 'Z') {
+            temp2 = *s2 + 0x20;
+        }
+        else
+            temp2 = *s2;
+
+        if (temp1 != temp2) {
+            return temp1 - temp2;
+        }
+        s1++;
+        s2++;
+    }
+
+
+
+    if (*s1 == 0 && *s2 == 0) {
+        return 0;
+    }
+    else
+        return *s1 - *s2;
+
+    return 0;
 
     return 0;
 }
@@ -187,6 +255,31 @@ int tj_strncmp(const char *s1, const char *s2, const int len)
 {
     /* 注意：函数内不允许定义任何形式的数组（包括静态数组） */
 
+    const char* oris1 = s1;
+    if (s1 == 0 && s2 == 0) {
+        return 0;
+    }
+
+    if (s1 == NULL) {
+        return -1;
+    }
+
+    if (s2 == NULL) {
+        return 1;
+    }
+
+    while (*s1 !=0 && *s2!=0 && s1 - oris1 < len) {
+
+        if (*s1 != *s2) {
+            return *s1 - *s2;
+        }
+        s1++;
+        s2++;
+    }
+
+    if (s1 - oris1 != len) {
+        return *s1 - *s2;
+    }
     return 0;
 }
 
@@ -200,6 +293,61 @@ int tj_strncmp(const char *s1, const char *s2, const int len)
 int tj_strcasencmp(const char *s1, const char *s2, const int len)
 {
     /* 注意：函数内不允许定义任何形式的数组（包括静态数组） */
+    
+    if (s1 == 0 && s2 == 0) {
+        return 0;
+    }
+
+    if (s1 == NULL) {
+        return -1;
+    }
+
+    if (s2 == NULL) {
+        return 1;
+    }
+
+    char temp1 = *s1;
+    char temp2 = *s2;
+    const char* oris1 = s1;
+
+
+    while (*s1 != 0 && *s2 != 0 && s1 - oris1 < len) {
+
+        if (*s1 >= 'A' && *s1 <= 'Z') {
+            temp1 = *s1 + 0x20;
+        }
+        else
+            temp1 = *s1;
+
+        if (*s2 >= 'A' && *s2 <= 'Z') {
+            temp2 = *s2 + 0x20;
+        }
+        else
+            temp2 = *s2;
+
+        if (temp1 != temp2) {
+            return temp1 - temp2;
+        }
+        s1++;
+        s2++;
+    }
+
+    if (s1 - oris1 != len) {
+
+        if (*s1 >= 'A' && *s1 <= 'Z') {
+            temp1 = *s1 + 0x20;
+        }
+        else
+            temp1 = *s1;
+
+        if (*s2 >= 'A' && *s2 <= 'Z') {
+            temp2 = *s2 + 0x20;
+        }
+        else
+            temp2 = *s2;
+
+        return temp1 - temp2;
+    }
 
     return 0;
 }
