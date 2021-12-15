@@ -15,8 +15,21 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="test.cpp">
+    <Library Include="lib_md5_sha_tools.lib">
+      <Filter>资源文件</Filter>
+    </Library>
+    <Library Include="lib_mto10_net_tools.lib">
+      <Filter>资源文件</Filter>
+    </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="mto10-net-demo.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="lib_mto10_net_tools.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
