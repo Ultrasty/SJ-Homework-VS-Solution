@@ -103,7 +103,7 @@ int main()
 {
 	to_be_continued("cmd_console_tools函数集演示开始", 0, 0);
 
-	if (1) {
+	if (0) {
 		int x, y;
 
 		/* 显示16*16的配色框，每个字符之间加一个空格 */
@@ -117,7 +117,7 @@ int main()
 		to_be_continued("配色显示演示完成");
 	}
 
-	if (1) {
+	if (0) {
 		const int MAX_X = 50;
 		const int Y = 2;
 		const int bg_color = COLOR_HYELLOW;	//背景为亮黄色
@@ -143,7 +143,7 @@ int main()
 		to_be_continued("右移特效完成");
 	}
 
-	if (1) {
+	if (0) {
 		const int MAX_Y = 12;
 		const int X = 2;
 		const int bg_color = COLOR_HYELLOW;	//背景为亮黄色
@@ -169,7 +169,7 @@ int main()
 		to_be_continued("下移特效完成");
 	}
 
-	if (1) {
+	if (0) {
 		/* 在屏幕的[0,0]-[60,20]区域内随机显示100个字符，值随机，颜色随机
 		说明：未判断位置重复，可能最终字符数少于100
 		未判断前景色/背景色重复，可能某些位置只看到颜色，看不到字符 */
