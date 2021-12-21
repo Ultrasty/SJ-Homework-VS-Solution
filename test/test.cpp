@@ -1,20 +1,17 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
-#include <fstream>
 using namespace std;
 
-int main(int argc, char* argv[])
+int main()
 {
-    ofstream out("out.txt", ios::out);
-    out << "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; //无换行符
-    out.close();
+    string s = "sss";
+    int ullValue = 16;
+    char buf[20] = { '0','0','0','0','0','0','0','0','0' };
+    sprintf(buf, "%8X", ullValue);
+    cout << buf << endl;
 
-    cout << "请查看当前out.txt文件的大小" << endl;
-    system("pause");
 
-    ifstream in("out.txt", ios::in | ios::ate);
-    cout << in.tellg() << endl;
-    cout << in.peek() << endl;
-    in.close();
+    
 
     return 0;
 }
