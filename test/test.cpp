@@ -10,8 +10,9 @@ int main()
     sprintf(buf, "%8X", ullValue);
     cout << buf << endl;
 
-
-    
+    int a;
+    sscanf("21", "%x", &a);
+    cout << a;
 
     return 0;
 }
