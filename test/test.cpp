@@ -1,18 +1,21 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
+#include <fstream>
+#include <cstring>
 using namespace std;
 
-int main()
+int main(int argc, char* argv[])
 {
-    string s = "sss";
-    int ullValue = 16;
-    char buf[20] = { '0','0','0','0','0','0','0','0','0' };
-    sprintf(buf, "%8X", ullValue);
-    cout << buf << endl;
+    ofstream out("out.txt", ios::out | ios::binary);
 
-    int a;
-    sscanf("21", "%x", &a);
-    cout << a;
 
+
+
+
+    for(int i =0;i<10000;i++)
+    out << "\xe2\x80\x8d";
+
+    out.close();
+
+    
     return 0;
 }

@@ -15,19 +15,8 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="test.cpp">
+    <ClCompile Include="9-b1-1.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="h1.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="h2.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="hh3.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

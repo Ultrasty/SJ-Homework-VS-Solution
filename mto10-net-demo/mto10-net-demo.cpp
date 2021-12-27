@@ -3,7 +3,10 @@
 #include <iomanip>
 #include <conio.h>
 #include <string>
+
 #include "lib_mto10_net_tools.h"
+#include <Windows.h>
+
 using namespace std;
 
 #define		MAX_ROW_NUM		8
