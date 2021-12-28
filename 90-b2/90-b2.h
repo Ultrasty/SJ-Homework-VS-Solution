@@ -2,6 +2,7 @@
 //放上述源程序的公用说明及其他所需内容
 #pragma once
 #include"cmd_console_tools.h"
+#include<conio.h>
 #include<iostream>
 #include<iomanip>
 using namespace std;
