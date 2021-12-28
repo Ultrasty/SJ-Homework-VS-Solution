@@ -76,6 +76,59 @@ void generate_data(int data[10][10], int max_x, int max_y)
 	}
 }
 
+void print_data_with_color(int data[10][10], int max_x, int max_y,int find_result[10][10])
+{
+	cout << endl;
+	cout << "当前数组(不同色标识)：" << endl;
+	cout << "  |";
+	for (int i = 0; i < max_x; i++) {
+		cout << setw(3) << i + 1;
+	}
+	cout << endl;
+	cout << "--+";
+	for (int i = 0; i < max_x; i++) {
+		cout << "---";
+	}
+	cout << endl;
+	for (int j = 0; j < max_y; j++) {
+		cout << char('A' + j) << " |";
+		for (int i = 0; i < max_x; i++) {
+			if (find_result[i][j] == 1) {
+				cct_setcolor(COLOR_YELLOW,COLOR_BLACK);
+				cout << setw(3) << data[i][j];
+				cct_setcolor();
+			}
+			else {
+				cout << setw(3) << data[i][j];
+			}
+			
+		}
+		cout << endl;
+	}
+}
+
+void print_find_result(int find_result[10][10], int max_x, int max_y)
+{
+	cout << endl;
+	cout << "查找结果数组：" << endl;
+	cout << "  |";
+	for (int i = 0; i < max_x; i++) {
+		cout << setw(3) << i + 1;
+	}
+	cout << endl;
+	cout << "--+";
+	for (int i = 0; i < max_x; i++) {
+		cout << "---";
+	}
+	cout << endl;
+	for (int j = 0; j < max_y; j++) {
+		cout << char('A' + j) << " |";
+		for (int i = 0; i < max_x; i++) {
+			cout << setw(3) << ((find_result[i][j] == 1) ?'*':'0');
+		}
+		cout << endl;
+	}
+}
 
 void print_data(int data[10][10], int max_x, int max_y)
 {
@@ -97,5 +150,46 @@ void print_data(int data[10][10], int max_x, int max_y)
 			cout << setw(3) << data[i][j];
 		}
 		cout << endl;
+	}
+}
+
+void find_congener(int data[10][10], int max_x, int max_y,int x,int y ,int find_result[10][10])
+{
+
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 10; j++) {
+			find_result[i][j] = 0;
+		}
+	}
+
+	find_result[x][y] = 1;
+
+	while (1) {
+		int anything_changed = 0;
+		for (int i = 0; i < max_x; i++) {
+			for (int j = 0; j < max_y; j++) {
+				if (find_result[i][j] == 1) {
+					if (i + 1 < max_x && find_result[i + 1][j] == 0 && data[i + 1][j] == data[i][j]) {
+						anything_changed = 1;
+						find_result[i + 1][j] = 1;
+					}
+					if (i - 1 >= 0 && find_result[i - 1][j] == 0 && data[i - 1][j] == data[i][j]) {
+						anything_changed = 1;
+						find_result[i - 1][j] = 1;
+					}
+					if (j + 1 < max_y && find_result[i][j + 1] == 0 && data[i][j + 1] == data[i][j]) {
+						anything_changed = 1;
+						find_result[i][j + 1] = 1;
+					}
+					if (j - 1 >= 0 && find_result[i][j - 1] == 0 && data[i][j - 1] == data[i][j]) {
+						anything_changed = 1;
+						find_result[i][j - 1] = 1;
+					}
+				}
+			}
+		}
+		if (anything_changed == 0) {
+			break;
+		}
 	}
 }
