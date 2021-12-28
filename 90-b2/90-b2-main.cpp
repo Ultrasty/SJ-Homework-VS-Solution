@@ -9,6 +9,10 @@ int display_menu()
 {
 	char ret;
 	cct_cls();
+
+	cct_setcolor(COLOR_BLACK, COLOR_YELLOW);
+	cout << "【本程序未考虑IO错误处理，请小心输入！】" << endl;
+	cct_setcolor();
 	cout << "---------------------------------------" << endl;
 	cout << "1.命令行找出可合成项并标识（非递归）" << endl;
 	cout << "2.命令行找出可合成项并标识（递归）" << endl;

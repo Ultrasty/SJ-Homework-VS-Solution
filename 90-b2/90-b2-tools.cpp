@@ -153,6 +153,26 @@ void print_data(int data[10][10], int max_x, int max_y)
 	}
 }
 
+void find_congener_recursion(int data[10][10], int max_x, int max_y, int x, int y, int find_result[10][10])
+{
+	if (x + 1 < max_x && find_result[x + 1][y] == 0 && data[x + 1][y] == data[x][y]) {
+		find_result[x + 1][y] = 1;
+		find_congener_recursion(data, max_x, max_y, x + 1, y, find_result);
+	}
+	if (x - 1 >= 0 && find_result[x - 1][y] == 0 && data[x - 1][y] == data[x][y]) {
+		find_result[x - 1][y] = 1;
+		find_congener_recursion(data, max_x, max_y, x - 1, y, find_result);
+	}
+	if (y + 1 < max_y && find_result[x][y + 1] == 0 && data[x][y + 1] == data[x][y]) {
+		find_result[x][y + 1] = 1;
+		find_congener_recursion(data, max_x, max_y, x, y + 1, find_result);
+	}
+	if (y - 1 >= 0 && find_result[x][y - 1] == 0 && data[x][y - 1] == data[x][y]) {
+		find_result[x][y - 1] = 1;
+		find_congener_recursion(data, max_x, max_y, x, y - 1, find_result);
+	}
+}
+
 void find_congener(int data[10][10], int max_x, int max_y,int x,int y ,int find_result[10][10])
 {
 
