@@ -3,6 +3,33 @@
 
 #include"90-b2.h"
 
+
+int merge(int data[10][10], int max_x, int max_y,int x,int y,int find_result[10][10])
+{
+	int score = 0;
+	for (int i = 0; i < max_x; i++) {
+		for (int j = 0; j < max_y; j++) {
+			if (find_result[i][j] == 1) {
+				score++;
+			}
+		}
+	}
+	score *= 3 * data[x][y];
+
+	for (int i = 0; i < max_x; i++) {
+		for (int j = 0; j < max_y; j++) {
+			if (i == x && j == y) {
+				data[i][j]++;
+			}
+			else if (find_result[i][j] == 1) {
+				data[i][j] = 0;
+			}
+		}
+	}
+	
+	return score;
+}
+
 void generate_data(int data[10][10], int max_x, int max_y)
 {
 	int max_num = 0;
@@ -94,8 +121,14 @@ void print_data_with_color(int data[10][10], int max_x, int max_y,int find_resul
 		cout << char('A' + j) << " |";
 		for (int i = 0; i < max_x; i++) {
 			if (find_result[i][j] == 1) {
+				if (data[i][j] >= 10) {
+					cout << " ";
+				}
+				if (data[i][j] < 10) {
+					cout << "  ";
+				}
 				cct_setcolor(COLOR_YELLOW,COLOR_BLACK);
-				cout << setw(3) << data[i][j];
+				cout << data[i][j];
 				cct_setcolor();
 			}
 			else {

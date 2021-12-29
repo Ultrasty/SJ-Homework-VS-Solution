@@ -15,3 +15,4 @@ void find_congener(int data[10][10], int max_x, int max_y,int x,int y ,int find_
 void print_find_result(int find_result[10][10], int max_x, int max_y);
 void print_data_with_color(int data[10][10], int max_x, int max_y, int find_result[10][10]);
 void find_congener_recursion(int data[10][10], int max_x, int max_y, int x, int y, int find_result[10][10]);
+int merge(int data[10][10], int max_x, int max_y, int x, int y, int find_result[10][10]);

@@ -10,10 +10,11 @@ int display_menu()
 	char ret;
 	cct_cls();
 
-	cct_setcolor(COLOR_BLACK, COLOR_YELLOW);
-	cout << "【本程序未考虑IO错误处理，请小心输入！】" << endl;
+	/*cct_setcolor(COLOR_BLACK, COLOR_YELLOW);
+	cout << "【本程序某些地方未考虑输入输出错误处理，请小心输入！】" << endl;
 	cout << "【程序中输入的字母全部为  ->小写<-  ！】" << endl;
-	cct_setcolor();
+	cout << "【若程序出现bug可以尝试重新启动本程序~】" << endl;
+	cct_setcolor();*/
 	cout << "---------------------------------------" << endl;
 	cout << "1.命令行找出可合成项并标识（非递归）" << endl;
 	cout << "2.命令行找出可合成项并标识（递归）" << endl;
