@@ -3,6 +3,20 @@
 
 #include "90-b2.h"
 
+void change_find_result_to_zero(int data[10][10], int max_x,int max_y,int find_result[10][10])
+{
+	for (int i = 0; i < max_x; i++) {
+		for (int j = 0; j < max_y; j++) {
+			if (data[i][j] == 0) {
+				find_result[i][j] = 1;
+			}
+			else {
+				find_result[i][j] = 0;
+			}
+		}
+	}
+}
+
 void input_select(char select[100],int max_x,int max_y)
 {
 	while (1) {
@@ -200,6 +214,20 @@ void play(int choice)
 				print_data_with_color(data, max_x, max_y, find_result);
 				
 				cout << " 本次得分：" << temp_score << " 总得分：" << score << " 合成目标：" << target << endl;
+
+				cout << "按任意键进行数组下落除0操作..." << endl;
+				system("pause");
+
+				fall(data, max_x, max_y);
+
+				change_find_result_to_zero(data, max_x, max_y,find_result);
+				print_data_with_color(data, max_x, max_y,find_result);
+
+				cout << "按任意键进行新值填充..." << endl;
+				system("pause");
+
+				generate_data(data, max_x, max_y);
+				print_data_with_color(data, max_x, max_y, find_result);
 
 				break;
 			}

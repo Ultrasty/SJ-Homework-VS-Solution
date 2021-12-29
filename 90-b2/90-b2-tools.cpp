@@ -3,8 +3,30 @@
 
 #include"90-b2.h"
 
+void fall_step(int data[10][10], int i, int j)
+{
+	swap(data[i][j], data[i][j - 1]);
+}
 
-int merge(int data[10][10], int max_x, int max_y,int x,int y,int find_result[10][10])
+void fall(int data[10][10], int max_x, int max_y)
+{
+	while (1) {
+		int anything_changed = 0;
+		for (int j = max_y - 1; j >= 0; j--) {
+			for (int i = max_x - 1; i >= 0; i--) {
+				if (data[i][j] == 0 && j - 1 >= 0 && data[i][j - 1] != 0) {
+					fall_step(data, i, j);
+					anything_changed = 1;
+				}
+			}
+		}
+		if (!anything_changed) {
+			break;
+		}
+	}
+}
+
+int merge(int data[10][10], int max_x, int max_y, int x, int y, int find_result[10][10])
 {
 	int score = 0;
 	for (int i = 0; i < max_x; i++) {
@@ -26,7 +48,7 @@ int merge(int data[10][10], int max_x, int max_y,int x,int y,int find_result[10]
 			}
 		}
 	}
-	
+
 	return score;
 }
 
@@ -46,7 +68,7 @@ void generate_data(int data[10][10], int max_x, int max_y)
 		for (int j = 0; j < max_y; j++) {
 			if (data[i][j] == 0) {
 				int temp = 0;
-				if (max_num <= 3){
+				if (max_num <= 3) {
 					temp = rand() % 3 + 1;
 				}
 				if (max_num == 4) {
@@ -63,7 +85,7 @@ void generate_data(int data[10][10], int max_x, int max_y)
 					if (temp >= 90) {
 						temp = 5;
 					}
-					else if(temp >=75 && temp < 90){
+					else if (temp >= 75 && temp < 90) {
 						temp = 4;
 					}
 					else {
@@ -103,7 +125,7 @@ void generate_data(int data[10][10], int max_x, int max_y)
 	}
 }
 
-void print_data_with_color(int data[10][10], int max_x, int max_y,int find_result[10][10])
+void print_data_with_color(int data[10][10], int max_x, int max_y, int find_result[10][10])
 {
 	cout << endl;
 	cout << "当前数组(不同色标识)：" << endl;
@@ -127,14 +149,14 @@ void print_data_with_color(int data[10][10], int max_x, int max_y,int find_resul
 				if (data[i][j] < 10) {
 					cout << "  ";
 				}
-				cct_setcolor(COLOR_YELLOW,COLOR_BLACK);
+				cct_setcolor(COLOR_YELLOW, COLOR_BLACK);
 				cout << data[i][j];
 				cct_setcolor();
 			}
 			else {
 				cout << setw(3) << data[i][j];
 			}
-			
+
 		}
 		cout << endl;
 	}
@@ -157,7 +179,7 @@ void print_find_result(int find_result[10][10], int max_x, int max_y)
 	for (int j = 0; j < max_y; j++) {
 		cout << char('A' + j) << " |";
 		for (int i = 0; i < max_x; i++) {
-			cout << setw(3) << ((find_result[i][j] == 1) ?'*':'0');
+			cout << setw(3) << ((find_result[i][j] == 1) ? '*' : '0');
 		}
 		cout << endl;
 	}
@@ -206,7 +228,7 @@ void find_congener_recursion(int data[10][10], int max_x, int max_y, int x, int 
 	}
 }
 
-void find_congener(int data[10][10], int max_x, int max_y,int x,int y ,int find_result[10][10])
+void find_congener(int data[10][10], int max_x, int max_y, int x, int y, int find_result[10][10])
 {
 
 	for (int i = 0; i < 10; i++) {
