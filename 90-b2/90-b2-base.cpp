@@ -718,4 +718,168 @@ void play(int choice)
 
 		system("pause");
 	}
+
+	if (choice == 9) {
+
+		cct_cls();
+
+		int score = 0;
+
+		input(max_y, 5, 8, "请输入行数(5-8)：\n");
+		input(max_x, 5, 10, "请输入列数(5-10)：\n");
+		input(target, 5, 20, "请输入合成目标(5-20)\n");
+
+		generate_data(data, max_x, max_y);
+
+		cct_setconsoleborder(8 * max_x + 7, 4 * max_y + 8);
+		cct_cls();
+
+		print_background_with_border(max_x, max_y);
+		print_data_block_with_border(data, max_x, max_y);
+
+		int find_result[10][10];
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 10; j++) {
+				find_result[i][j] = 0;
+			}
+		}
+
+		//block的坐标
+		int current_x = 0;
+		int current_y = 0;
+
+		//cmd窗口的坐标
+		int X = 0, Y = 0;
+		int ret, maction;
+		int keycode1, keycode2;
+		int loop = 1;
+		int comfirm = 0;
+
+		cct_enable_mouse();
+		cct_setcursor(CURSOR_INVISIBLE);	//关闭光标
+
+		print_one_block(data[current_x][current_y], current_x * 8 + 4, current_y * 4 + 2, COLOR_HWHITE);
+		while (loop) {
+			/* 读鼠标/键盘，返回值为下述操作中的某一种, 当前鼠标位置在<X,Y>处 */
+			ret = cct_read_keyboard_and_mouse(X, Y, maction, keycode1, keycode2);
+
+			if (ret == CCT_MOUSE_EVENT) {
+
+				if (comfirm == 1 && (current_x != (X - 4) / 8 || current_y != (Y - 2) / 4)) {
+					comfirm = 0;
+					print_data_block_with_border(data, max_x, max_y);
+				}
+
+				if ((Y - 1) % 4 == 0 || (X - 2) % 8 == 0 || (X - 2) % 8 == 1 || Y < 1 || X < 2 || Y > 4 * max_y + 1 || X > 8 * max_x + 2) {
+					print_one_block(data[current_x][current_y], current_x * 8 + 4, current_y * 4 + 2);
+					cct_gotoxy(0, 4 * max_y + 3);
+					cout << "[无效位置]                                       ";
+				}
+				else {
+
+					print_one_block(data[current_x][current_y], current_x * 8 + 4, current_y * 4 + 2);
+					current_x = (X - 4) / 8;
+					current_y = (Y - 2) / 4;
+					print_one_block(data[current_x][current_y], current_x * 8 + 4, current_y * 4 + 2, COLOR_HWHITE);
+					cct_gotoxy(0, 4 * max_y + 3);
+					cout << "[当前选择]:" << char(current_y + 'A') << "行" << setw(2) << current_x + 1 << "列";
+				}
+
+				switch (maction) {
+					case MOUSE_LEFT_BUTTON_CLICK://按下左键
+
+						find_congener(data, max_x, max_y, current_x, current_y, find_result);
+						if (sum_of_findresult(find_result, max_x, max_y) == 1) {
+							cct_gotoxy(0, 4 * max_y + 3);
+							cout << "目标区域没有可合成的方块！                         " << endl;
+						}
+						else {
+							cout << " 选择完毕！                         " << endl;
+							highlight_findresult(data, max_x, max_y, find_result);
+							comfirm += 1;
+							if (comfirm == 2) {
+								int temp_score = merge(data, max_x, max_y, current_x, current_y, find_result);
+								score += temp_score;
+								cct_gotoxy(0, 4 * max_y + 4);
+								cout << " 本次得分：" << temp_score << " 总得分：" << score << " 合成目标：" << target <<"      " << endl;
+								if (get_max_num(data, max_x, max_y) >= target) {
+									cout << "您已达到合成目标！您可以继续往更高的目标合成" << endl;
+								}
+								print_data_block_with_border(data, max_x, max_y);
+								console_fall(data, max_x, max_y);
+								generate_data(data, max_x, max_y);
+								print_data_block_with_border(data, max_x, max_y);
+								cct_gotoxy(0, 4 * max_y + 3);
+								comfirm = 0;
+							}
+						}
+
+						break;
+					default:
+						break;
+				}
+			}
+			else if (ret == CCT_KEYBOARD_EVENT) {
+
+
+				switch (keycode1) {
+					case 224:
+						if (comfirm == 1) {
+							comfirm = 0;
+							print_data_block_with_border(data, max_x, max_y);
+						}
+						switch (keycode2) {
+							case KB_ARROW_UP:
+								key_move(current_x, current_y, data, max_x, max_y, -1, 0);
+								break;
+							case KB_ARROW_DOWN:
+								key_move(current_x, current_y, data, max_x, max_y, 1, 0);
+								break;
+							case KB_ARROW_LEFT:
+								key_move(current_x, current_y, data, max_x, max_y, 0, -1);
+								break;
+							case KB_ARROW_RIGHT:
+								key_move(current_x, current_y, data, max_x, max_y, 0, 1);
+								break;
+						}
+						break;
+					case 13:
+						find_congener(data, max_x, max_y, current_x, current_y, find_result);
+						if (sum_of_findresult(find_result, max_x, max_y) == 1) {
+							cct_gotoxy(0, 4 * max_y + 3);
+							cout << "目标区域没有可合成的方块！                         " << endl;
+						}
+						else {
+							cct_gotoxy(0, 4 * max_y + 3);
+							cout << " 选择完毕！                         " << endl;
+							highlight_findresult(data, max_x, max_y, find_result);
+							comfirm += 1;
+							if (comfirm == 2) {
+								int temp_score = merge(data, max_x, max_y, current_x, current_y, find_result);
+								score += temp_score;
+								cct_gotoxy(0, 4 * max_y + 4);
+								cout << " 本次得分：" << temp_score << " 总得分：" << score << " 合成目标：" << target << endl;
+								if (get_max_num(data, max_x, max_y) >= target) {
+									cout << "您已达到合成目标！您可以继续往更高的目标合成" << endl;
+								}
+								print_data_block_with_border(data, max_x, max_y);
+								console_fall(data, max_x, max_y);
+								generate_data(data, max_x, max_y);
+								print_data_block_with_border(data, max_x, max_y);
+								cct_gotoxy(0, 4 * max_y + 3);
+								comfirm = 0;
+							}
+						}
+						break;
+					default:
+						break;
+				}
+			}
+		}
+
+		cct_disable_mouse();	//禁用鼠标
+		cct_setcursor(CURSOR_VISIBLE_NORMAL);	//打开光标
+
+		system("pause");
+	}
 }
