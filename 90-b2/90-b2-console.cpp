@@ -5,16 +5,28 @@
 
 void print_one_block(int number, int x, int y, int color)
 {
-	cct_setcolor(number, color);
-	cct_gotoxy(x, y);
-	cout << "©³©¥©·";
-	cct_gotoxy(x, y+1);
-	cout << "©§  ©§";
-	cct_gotoxy(x, y+2);
-	cout << "©»©¥©¿";
-	cct_gotoxy(x + 2, y + 1);
-	cout << number;
-	cct_setcolor();
+	if (number != 0) {
+		cct_setcolor(number, color);
+		cct_gotoxy(x, y);
+		cout << "©³©¥©·";
+		cct_gotoxy(x, y + 1);
+		cout << "©§  ©§";
+		cct_gotoxy(x, y + 2);
+		cout << "©»©¥©¿";
+		cct_gotoxy(x + 2, y + 1);
+		cout << number;
+		cct_setcolor();
+	}
+	else {
+		cct_setcolor(COLOR_HWHITE);
+		cct_gotoxy(x, y);
+		cout << "      ";
+		cct_gotoxy(x, y + 1);
+		cout << "      ";
+		cct_gotoxy(x, y + 2);
+		cout << "      ";
+		cct_setcolor();
+	}
 }
 
 void print_data_block_with_border(int data[10][10], int max_x, int max_y)

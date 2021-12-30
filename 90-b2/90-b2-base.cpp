@@ -3,6 +3,66 @@
 
 #include "90-b2.h"
 
+
+void console_fall_step(int data[10][10], int i, int j)
+{
+	swap(data[i][j], data[i][j - 1]);
+
+	for (int k = 1; k <= 4; k++) {
+		Sleep(100);
+		if (((j - 1) * 4 + k) % 4 != 0) {
+			cct_showch(i * 8 + 4, (j - 1) * 4 + k + 2 - 1, ' ', COLOR_HWHITE, COLOR_BLACK, 6);
+		}
+		else {
+			cct_gotoxy(i * 8 + 4, (j - 1) * 4 + k + 2 - 1);
+			cct_setcolor(COLOR_HWHITE, COLOR_BLACK);
+			cout << "━━━";
+			cct_setcolor();
+		}
+		print_one_block(data[i][j], i * 8 + 4, (j - 1) * 4 + k + 2);
+	}
+}
+
+void console_fall(int data[10][10], int max_x, int max_y)
+{
+	while (1) {
+		int anything_changed = 0;
+		for (int j = max_y - 1; j >= 0; j--) {
+			for (int i = max_x - 1; i >= 0; i--) {
+				if (data[i][j] == 0 && j - 1 >= 0 && data[i][j - 1] != 0) {
+					console_fall_step(data, i, j);
+					anything_changed = 1;
+				}
+			}
+		}
+		if (!anything_changed) {
+			break;
+		}
+	}
+}
+
+void highlight_findresult(int data[10][10], int max_x, int max_y, int find_result[10][10])
+{
+	for (int i = 0; i < max_x; i++) {
+		for (int j = 0; j < max_y; j++) {
+			if (find_result[i][j] == 1) {
+				print_one_block(data[i][j], i * 8 + 4, j * 4 + 2, COLOR_HWHITE);
+			}
+		}
+	}
+}
+
+int sum_of_findresult(int find_result[10][10],int max_x,int max_y)
+{
+	int sum = 0;
+	for (int i = 0; i < max_x; i++) {
+		for (int j = 0; j < max_y; j++) {
+			sum += find_result[i][j];
+		}
+	}
+	return sum;
+}
+
 void key_move(int &current_x,int &current_y,int data[10][10],int max_x,int max_y, int vertical_direction, int horizontal_direction)
 {
 	print_one_block(data[current_x][current_y], current_x * 8 + 4, current_y * 4 + 2);
@@ -422,6 +482,7 @@ void play(int choice)
 		cct_enable_mouse();
 		cct_setcursor(CURSOR_INVISIBLE);	//关闭光标
 		
+		print_one_block(data[current_x][current_y], current_x * 8 + 4, current_y * 4 + 2, COLOR_HWHITE);
 		while (loop) {
 			/* 读鼠标/键盘，返回值为下述操作中的某一种, 当前鼠标位置在<X,Y>处 */
 			ret = cct_read_keyboard_and_mouse(X, Y, maction, keycode1, keycode2);
@@ -445,7 +506,8 @@ void play(int choice)
 
 				switch (maction) {
 					case MOUSE_LEFT_BUTTON_CLICK:			//按下左键
-						cout << "按下左键      " << endl;
+						cout << " 选择完毕！" << endl;
+						loop = 0;
 						break;
 					default:
 						break;
@@ -471,6 +533,10 @@ void play(int choice)
 								break;
 						}
 						break;
+					case 13:
+						cout << " 选择完毕！" << endl;
+						loop = 0;
+						break;
 					default:
 						break;
 				}//end of swicth(keycode1)
@@ -480,33 +546,130 @@ void play(int choice)
 		cct_disable_mouse();	//禁用鼠标
 		cct_setcursor(CURSOR_VISIBLE_NORMAL);	//打开光标
 
-		while (1) {
-			
+		system("pause");
+	}
 
-			print_one_block(data[current_x][current_y], current_x * 8 + 4, current_y * 4 + 2, COLOR_HWHITE);
 
-			char c = _getch();
-			//上
-			if (c == 'H') {
-				print_one_block(data[current_x][current_y], current_x * 8 + 4, current_y * 4 + 2);
-				current_y = (current_y + max_y - 1) % max_y;
-			}
-			//下
-			if (c == 'P') {
-				print_one_block(data[current_x][current_y], current_x * 8 + 4, current_y * 4 + 2);
-				current_y = (current_y + max_y + 1) % max_y;
-			}
-			//左
-			if (c == 'K') {
-				print_one_block(data[current_x][current_y], current_x * 8 + 4, current_y * 4 + 2);
-				current_x = (current_x + max_x - 1) % max_x;
-			}
-			//右
-			if (c == 'M') {
-				print_one_block(data[current_x][current_y], current_x * 8 + 4, current_y * 4 + 2);
-				current_x = (current_x + max_x + 1) % max_x;
+	if (choice == 8) {
+
+		cct_cls();
+
+		int score = 0;
+
+		input(max_y, 5, 8, "请输入行数(5-8)：\n");
+		input(max_x, 5, 10, "请输入列数(5-10)：\n");
+
+		generate_data(data, max_x, max_y);
+
+		cct_setconsoleborder(8 * max_x + 7, 4 * max_y + 8);
+		cct_cls();
+
+		print_background_with_border(max_x, max_y);
+		print_data_block_with_border(data, max_x, max_y);
+
+		int find_result[10][10];
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 10; j++) {
+				find_result[i][j] = 0;
 			}
 		}
+
+		//block的坐标
+		int current_x = 0;
+		int current_y = 0;
+
+		//cmd窗口的坐标
+		int X = 0, Y = 0;
+		int ret, maction;
+		int keycode1, keycode2;
+		int loop = 1;
+		int comfirm = 0;
+
+		cct_enable_mouse();
+		cct_setcursor(CURSOR_INVISIBLE);	//关闭光标
+
+		print_one_block(data[current_x][current_y], current_x * 8 + 4, current_y * 4 + 2, COLOR_HWHITE);
+		while (loop) {
+			/* 读鼠标/键盘，返回值为下述操作中的某一种, 当前鼠标位置在<X,Y>处 */
+			ret = cct_read_keyboard_and_mouse(X, Y, maction, keycode1, keycode2);
+
+			if (ret == CCT_MOUSE_EVENT) {
+
+				if (comfirm == 1 && (current_x != (X - 4) / 8 || current_y != (Y - 2) / 4)) {
+					comfirm = 0;
+					print_data_block_with_border(data, max_x, max_y);
+				}
+
+				if ((Y - 1) % 4 == 0 || (X - 2) % 8 == 0 || (X - 2) % 8 == 1 || Y < 1 || X < 2 || Y > 4 * max_y + 1 || X > 8 * max_x + 2) {
+					print_one_block(data[current_x][current_y], current_x * 8 + 4, current_y * 4 + 2);
+					cct_gotoxy(0, 4 * max_y + 3);
+					cout << "[无效位置]                                       ";
+				}
+				else {
+					
+					print_one_block(data[current_x][current_y], current_x * 8 + 4, current_y * 4 + 2);
+					current_x = (X - 4) / 8;
+					current_y = (Y - 2) / 4;
+					print_one_block(data[current_x][current_y], current_x * 8 + 4, current_y * 4 + 2, COLOR_HWHITE);
+					cct_gotoxy(0, 4 * max_y + 3);
+					cout << "[当前选择]:" << char(current_y + 'A') << "行" << setw(2) << current_x + 1 << "列";
+				}
+
+				switch (maction) {
+					case MOUSE_LEFT_BUTTON_CLICK://按下左键
+
+						find_congener(data, max_x, max_y, current_x, current_y, find_result);
+						if (sum_of_findresult(find_result, max_x, max_y) == 1) {
+							cout << "目标区域没有可合成的方块！" << endl;
+						}
+						else {
+							cout << " 选择完毕！" << endl;
+							highlight_findresult(data, max_x, max_y, find_result);
+							comfirm += 1;
+							if (comfirm == 2) {
+								merge(data, max_x, max_y, current_x, current_y, find_result);
+								print_data_block_with_border(data, max_x, max_y);
+								console_fall(data, max_x, max_y);
+							}
+						}
+						
+						break;
+					default:
+						break;
+				}
+			}
+			else if (ret == CCT_KEYBOARD_EVENT) {
+
+
+				switch (keycode1) {
+					case 224:
+						switch (keycode2) {
+							case KB_ARROW_UP:
+								key_move(current_x, current_y, data, max_x, max_y, -1, 0);
+								break;
+							case KB_ARROW_DOWN:
+								key_move(current_x, current_y, data, max_x, max_y, 1, 0);
+								break;
+							case KB_ARROW_LEFT:
+								key_move(current_x, current_y, data, max_x, max_y, 0, -1);
+								break;
+							case KB_ARROW_RIGHT:
+								key_move(current_x, current_y, data, max_x, max_y, 0, 1);
+								break;
+						}
+						break;
+					case 13:
+						cout << " 选择完毕！" << endl;
+						comfirm += 1;
+						break;
+					default:
+						break;
+				}
+			}
+		}
+
+		cct_disable_mouse();	//禁用鼠标
+		cct_setcursor(CURSOR_VISIBLE_NORMAL);	//打开光标
 
 		system("pause");
 	}
