@@ -321,6 +321,25 @@ void play(int choice)
 			}
 
 		}
+		system("pause");
+	}
+
+	if (choice == 5) {
+
+		cct_cls();
+
+		int score = 0;
+
+		input(max_y, 5, 8, "请输入行数(5-8)：\n");
+		input(max_x, 5, 10, "请输入列数(5-10)：\n");
+		input(target, 5, 20, "请输入合成目标(5-20)\n");
+
+		generate_data(data, max_x, max_y);
+
+		cct_setconsoleborder(6 * max_x + 7, 3 * max_y + 8);
+		cct_cls();
+
+		print_background(max_x, max_y);
 
 		system("pause");
 	}
