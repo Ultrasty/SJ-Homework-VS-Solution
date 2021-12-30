@@ -403,13 +403,19 @@ void play(int choice)
 			ret = cct_read_keyboard_and_mouse(X, Y, maction, keycode1, keycode2);
 
 			if (ret == CCT_MOUSE_EVENT) {
-				/* 转到第7行进行打印 */
-				cct_gotoxy(0, 4 * max_y + 3);
+				
+				
 				if ((Y - 1) % 4 == 0 || (X - 2) % 8 == 0 || (X - 2) % 8 == 1 || Y < 1 || X < 2 || Y > 4 * max_y + 1 || X > 8 * max_x + 2) {
+					print_one_block(data[current_x][current_y], current_x * 8 + 4, current_y * 4 + 2);
+					cct_gotoxy(0, 4 * max_y + 3);
 					cout << "[无效位置]                                       ";
 				}
 				else {
-					cout << "[当前选择]:" <<char((Y - 2) / 4 + 'A') << "行" << setw(2) << (X - 4) / 8 + 1 << "列";
+					current_x = (X - 4) / 8;
+					current_y = (Y - 2) / 4;
+					print_one_block(data[current_x][current_y], current_x * 8 + 4, current_y * 4 + 2, COLOR_HWHITE);
+					cct_gotoxy(0, 4 * max_y + 3);
+					cout << "[当前选择]:" <<char(current_y + 'A') << "行" << setw(2) << current_x + 1 << "列";
 				}
 
 				switch (maction) {
