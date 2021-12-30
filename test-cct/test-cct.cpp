@@ -196,7 +196,7 @@ int main()
 		to_be_continued("随机字符演示完成");
 	}
 
-	if (1) {
+	if (0) {
 		int cur_cols, cur_lines, cur_buffer_cols, cur_buffer_lines;
 		int cols, lines, buffer_cols, buffer_lines;
 		//		int i;
@@ -237,7 +237,7 @@ int main()
 		to_be_continued("改变窗口的宽度与高度完成，已恢复为初始值");
 	}
 
-	if (1) {
+	if (0) {
 		cct_setcursor(CURSOR_VISIBLE_FULL);
 		to_be_continued("光标显示为全高色块", 0, 2);
 
@@ -253,7 +253,7 @@ int main()
 		to_be_continued("光标形状演示完成");
 	}
 
-	if (1) {
+	if (0) {
 		char cur_title[256];
 		cct_getconsoletitle(cur_title, sizeof(cur_title));
 		cout << endl << endl << "当前窗口标题：" << cur_title << endl;

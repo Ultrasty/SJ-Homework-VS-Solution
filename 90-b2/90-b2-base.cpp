@@ -385,10 +385,70 @@ void play(int choice)
 		print_background_with_border(max_x, max_y);
 		print_data_block_with_border(data, max_x, max_y);
 
-		cct_gotoxy(0, 4 * max_y + 3);
-
+		//block的坐标
 		int current_x = 0;
 		int current_y = 0;
+
+		//cmd窗口的坐标
+		int X = 0, Y = 0;
+		int ret, maction;
+		int keycode1, keycode2;
+		int loop = 1;
+
+		cct_enable_mouse();
+		cct_setcursor(CURSOR_INVISIBLE);	//关闭光标
+		
+		while (loop) {
+			/* 读鼠标/键盘，返回值为下述操作中的某一种, 当前鼠标位置在<X,Y>处 */
+			ret = cct_read_keyboard_and_mouse(X, Y, maction, keycode1, keycode2);
+
+			if (ret == CCT_MOUSE_EVENT) {
+				/* 转到第7行进行打印 */
+				cct_gotoxy(0, 4 * max_y + 3);
+				if ((Y - 1) % 4 == 0 || (X - 2) % 8 == 0 || (X - 2) % 8 == 1 || Y < 1 || X < 2 || Y > 4 * max_y + 1 || X > 8 * max_x + 2) {
+					cout << "[无效位置]                                       ";
+				}
+				else {
+					cout << "[当前选择]:" <<char((Y - 2) / 4 + 'A') << "行" << setw(2) << (X - 4) / 8 + 1 << "列";
+				}
+
+				switch (maction) {
+					case MOUSE_LEFT_BUTTON_CLICK:			//按下左键
+						cout << "按下左键      " << endl;
+						break;
+					default:
+						break;
+				} 
+			} 
+			else if (ret == CCT_KEYBOARD_EVENT) {
+				cct_gotoxy(0, 4 * max_y + 3);
+				cout << "[当前按键] : ";
+
+				switch (keycode1) {
+					case 224:
+						switch (keycode2) {
+							case KB_ARROW_UP:
+								cout << "上箭头                        ";
+								break;
+							case KB_ARROW_DOWN:
+								cout << "下箭头                        ";
+								break;
+							case KB_ARROW_LEFT:
+								cout << "左箭头                        ";
+								break;
+							case KB_ARROW_RIGHT:
+								cout << "右箭头                        ";
+								break;
+						}
+						break;
+					default:
+						break;
+				}//end of swicth(keycode1)
+			}//end of else if(ret == CCT_KEYBOARD_EVENT）
+		} //end of while(1)
+
+		cct_disable_mouse();	//禁用鼠标
+		cct_setcursor(CURSOR_VISIBLE_NORMAL);	//打开光标
 
 		while (1) {
 			
