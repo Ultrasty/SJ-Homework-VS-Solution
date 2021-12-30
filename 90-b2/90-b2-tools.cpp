@@ -3,6 +3,19 @@
 
 #include"90-b2.h"
 
+int get_max_num(int data[10][10],int max_x,int max_y)
+{
+	int max_num = 0;
+	for (int i = 0; i < max_x; i++) {
+		for (int j = 0; j < max_y; j++) {
+			if (max_num < data[i][j]) {
+				max_num = data[i][j];
+			}
+		}
+	}
+	return max_num;
+}
+
 void fall_step(int data[10][10], int i, int j)
 {
 	swap(data[i][j], data[i][j - 1]);

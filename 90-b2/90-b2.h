@@ -17,3 +17,4 @@ void print_data_with_color(int data[10][10], int max_x, int max_y, int find_resu
 void find_congener_recursion(int data[10][10], int max_x, int max_y, int x, int y, int find_result[10][10]);
 int merge(int data[10][10], int max_x, int max_y, int x, int y, int find_result[10][10]);
 void fall(int data[10][10], int max_x, int max_y);
+int get_max_num(int data[10][10], int max_x, int max_y);

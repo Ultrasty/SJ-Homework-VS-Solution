@@ -236,4 +236,92 @@ void play(int choice)
 
 		system("pause");
 	}
+
+	if (choice == 4) {
+		cct_cls();
+
+		int score = 0;
+
+		input(max_y, 5, 8, "请输入行数(5-8)：\n");
+		input(max_x, 5, 10, "请输入列数(5-10)：\n");
+		input(target, 5, 20, "请输入合成目标(5-20)\n");
+
+		generate_data(data, max_x, max_y);
+		print_data(data, max_x, max_y);
+
+		while (1) {
+
+			char select[100];
+
+			input_select(select, max_x, max_y);
+
+
+			cout << "输入为" << select[0] << "行" << select[1] << "列" << endl;
+
+			int select_x = select[1] - '1';
+			int select_y = select[0] - 'a';
+
+			int find_result[10][10];
+			for (int i = 0; i < 10; i++) {
+				for (int j = 0; j < 10; j++) {
+					find_result[i][j] = 0;
+				}
+			}
+			find_result[select_x][select_y] = 1;
+			find_congener_recursion(data, max_x, max_y, select_x, select_y, find_result);
+			print_find_result(find_result, max_x, max_y);
+			print_data_with_color(data, max_x, max_y, find_result);
+
+			cout << "请确认是否把相邻的相同值合并到" << select[0] << select[1] << "中(【小写】：y/n/q)：";
+
+			char choice;
+			while (1) {
+				choice = _getche();
+				if (choice != 'y' && choice != 'n' && choice != 'q') {
+					continue;
+				}
+				else
+					break;
+			}
+
+			if (choice == 'q') {
+				break;
+			}
+			if (choice == 'n') {
+				continue;
+			}
+			if (choice == 'y') {
+				//处理逻辑
+
+				int temp_score = merge(data, max_x, max_y, select_x, select_y, find_result);
+				score += temp_score;
+
+				cout << "\n相同值归并后的数组(不同色标识)：" << endl;
+				print_data_with_color(data, max_x, max_y, find_result);
+
+				cout << " 本次得分：" << temp_score << " 总得分：" << score << " 合成目标：" << target << endl;
+				if (get_max_num(data, max_x, max_y) >= target) {
+					cout << "您已达到合成目标！您可以继续往更高的目标合成" << endl;
+				}
+
+				cout << "按任意键进行数组下落除0操作..." << endl;
+				system("pause");
+
+				fall(data, max_x, max_y);
+
+				change_find_result_to_zero(data, max_x, max_y, find_result);
+				print_data_with_color(data, max_x, max_y, find_result);
+
+				cout << "按任意键进行新值填充..." << endl;
+				system("pause");
+
+				generate_data(data, max_x, max_y);
+				print_data_with_color(data, max_x, max_y, find_result);
+
+			}
+
+		}
+
+		system("pause");
+	}
 }
