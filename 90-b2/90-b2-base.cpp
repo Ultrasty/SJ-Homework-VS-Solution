@@ -9,7 +9,7 @@ void console_fall_step(int data[10][10], int i, int j)
 	swap(data[i][j], data[i][j - 1]);
 
 	for (int k = 1; k <= 4; k++) {
-		Sleep(100);
+		Sleep(1);
 		if (((j - 1) * 4 + k) % 4 != 0) {
 			cct_showch(i * 8 + 4, (j - 1) * 4 + k + 2 - 1, ' ', COLOR_HWHITE, COLOR_BLACK, 6);
 		}
@@ -620,16 +620,30 @@ void play(int choice)
 
 						find_congener(data, max_x, max_y, current_x, current_y, find_result);
 						if (sum_of_findresult(find_result, max_x, max_y) == 1) {
-							cout << "目标区域没有可合成的方块！" << endl;
+							cout << "目标区域没有可合成的方块！                         " << endl;
 						}
 						else {
-							cout << " 选择完毕！" << endl;
+							cout << " 选择完毕！                         " << endl;
 							highlight_findresult(data, max_x, max_y, find_result);
 							comfirm += 1;
 							if (comfirm == 2) {
 								merge(data, max_x, max_y, current_x, current_y, find_result);
 								print_data_block_with_border(data, max_x, max_y);
+
+								cct_gotoxy(0, 4 * max_y + 3);
+								cout << "按任意键【键盘】下落                       " << endl;
+								system("pause");
 								console_fall(data, max_x, max_y);
+
+								cct_gotoxy(0, 4 * max_y + 3);
+								cout << "按任意键【键盘】产生新值                           " << endl;
+								system("pause");
+
+								generate_data(data, max_x, max_y);
+								print_data_block_with_border(data, max_x, max_y);
+
+								cct_gotoxy(0, 4 * max_y + 3);
+								loop = 0;
 							}
 						}
 						
@@ -643,6 +657,10 @@ void play(int choice)
 
 				switch (keycode1) {
 					case 224:
+						if (comfirm == 1) {
+							comfirm = 0;
+							print_data_block_with_border(data, max_x, max_y);
+						}
 						switch (keycode2) {
 							case KB_ARROW_UP:
 								key_move(current_x, current_y, data, max_x, max_y, -1, 0);
@@ -659,8 +677,35 @@ void play(int choice)
 						}
 						break;
 					case 13:
-						cout << " 选择完毕！" << endl;
-						comfirm += 1;
+						find_congener(data, max_x, max_y, current_x, current_y, find_result);
+						if (sum_of_findresult(find_result, max_x, max_y) == 1) {
+							cout << "目标区域没有可合成的方块！                         " << endl;
+						}
+						else {
+							cct_gotoxy(0, 4 * max_y + 3);
+							cout << " 选择完毕！                         " << endl;
+							highlight_findresult(data, max_x, max_y, find_result);
+							comfirm += 1;
+							if (comfirm == 2) {
+								merge(data, max_x, max_y, current_x, current_y, find_result);
+								print_data_block_with_border(data, max_x, max_y);
+
+								cct_gotoxy(0, 4 * max_y + 3);
+								cout << "按任意键【键盘】下落                       " << endl;
+								system("pause");
+								console_fall(data, max_x, max_y);
+
+								cct_gotoxy(0, 4 * max_y + 3);
+								cout << "按任意键【键盘】产生新值                           " << endl;
+								system("pause");
+
+								generate_data(data, max_x, max_y);
+								print_data_block_with_border(data, max_x, max_y);
+
+								cct_gotoxy(0, 4 * max_y + 3);
+								loop = 0;
+							}
+						}
 						break;
 					default:
 						break;
