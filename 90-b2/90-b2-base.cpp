@@ -3,7 +3,7 @@
 
 #include "90-b2.h"
 
-void change_find_result_to_zero(int data[10][10], int max_x,int max_y,int find_result[10][10])
+void change_find_result_to_zero(int data[10][10], int max_x, int max_y, int find_result[10][10])
 {
 	for (int i = 0; i < max_x; i++) {
 		for (int j = 0; j < max_y; j++) {
@@ -17,7 +17,7 @@ void change_find_result_to_zero(int data[10][10], int max_x,int max_y,int find_r
 	}
 }
 
-void input_select(char select[100],int max_x,int max_y)
+void input_select(char select[100], int max_x, int max_y)
 {
 	while (1) {
 		cout << "\n请以字母+数字形式[例：c2]输入矩阵坐标：" << endl;
@@ -50,7 +50,7 @@ void input_select(char select[100],int max_x,int max_y)
 
 //通用输入输出错误处理
 template <class T>
-void input(T &in,T lower_limits,T upper_limits,const char * prompt)
+void input(T& in, T lower_limits, T upper_limits, const char* prompt)
 {
 	char c;
 	while (1) {
@@ -78,12 +78,12 @@ void input(T &in,T lower_limits,T upper_limits,const char * prompt)
 //被main调用，并传入choice
 void play(int choice)
 {
-	
+
 	int max_x;
 	int max_y;
 	int target;
 	int data[10][10];
-	
+
 
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 10; j++) {
@@ -94,8 +94,8 @@ void play(int choice)
 	if (choice == 1) {
 		cct_cls();
 
-		input(max_y, 5, 8,"请输入行数(5-8)：\n");
-		input(max_x, 5, 10,"请输入列数(5-10)：\n");
+		input(max_y, 5, 8, "请输入行数(5-8)：\n");
+		input(max_x, 5, 10, "请输入列数(5-10)：\n");
 
 		generate_data(data, max_x, max_y);
 		print_data(data, max_x, max_y);
@@ -110,9 +110,9 @@ void play(int choice)
 		int select_y = select[0] - 'a';
 
 		int find_result[10][10];
-		find_congener(data, max_x, max_y,select_x,select_y ,find_result);
+		find_congener(data, max_x, max_y, select_x, select_y, find_result);
 		print_find_result(find_result, max_x, max_y);
-		print_data_with_color(data, max_x,max_y,find_result);
+		print_data_with_color(data, max_x, max_y, find_result);
 
 		system("pause");
 	}
@@ -168,7 +168,7 @@ void play(int choice)
 			char select[100];
 
 			input_select(select, max_x, max_y);
-			
+
 
 			cout << "输入为" << select[0] << "行" << select[1] << "列" << endl;
 
@@ -212,7 +212,7 @@ void play(int choice)
 
 				cout << "\n相同值归并后的数组(不同色标识)：" << endl;
 				print_data_with_color(data, max_x, max_y, find_result);
-				
+
 				cout << " 本次得分：" << temp_score << " 总得分：" << score << " 合成目标：" << target << endl;
 
 				cout << "按任意键进行数组下落除0操作..." << endl;
@@ -220,8 +220,8 @@ void play(int choice)
 
 				fall(data, max_x, max_y);
 
-				change_find_result_to_zero(data, max_x, max_y,find_result);
-				print_data_with_color(data, max_x, max_y,find_result);
+				change_find_result_to_zero(data, max_x, max_y, find_result);
+				print_data_with_color(data, max_x, max_y, find_result);
 
 				cout << "按任意键进行新值填充..." << endl;
 				system("pause");
@@ -231,7 +231,7 @@ void play(int choice)
 
 				break;
 			}
-			
+
 		}
 
 		system("pause");
@@ -332,7 +332,6 @@ void play(int choice)
 
 		input(max_y, 5, 8, "请输入行数(5-8)：\n");
 		input(max_x, 5, 10, "请输入列数(5-10)：\n");
-		input(target, 5, 20, "请输入合成目标(5-20)\n");
 
 		generate_data(data, max_x, max_y);
 
@@ -342,7 +341,29 @@ void play(int choice)
 		print_background(max_x, max_y);
 		print_data_block(data, max_x, max_y);
 
-		cct_gotoxy(0,3*max_y+3);
+		cct_gotoxy(0, 3 * max_y + 3);
+
+		system("pause");
+	}
+
+	if (choice == 6) {
+
+		cct_cls();
+
+		int score = 0;
+
+		input(max_y, 5, 8, "请输入行数(5-8)：\n");
+		input(max_x, 5, 10, "请输入列数(5-10)：\n");
+
+		generate_data(data, max_x, max_y);
+
+		cct_setconsoleborder(8 * max_x + 7, 4 * max_y + 8);
+		cct_cls();
+
+		print_background_with_border(max_x, max_y);
+		print_data_block_with_border(data, max_x, max_y);
+
+		cct_gotoxy(0, 4 * max_y + 3);
 
 		system("pause");
 	}

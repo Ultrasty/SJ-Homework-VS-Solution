@@ -21,3 +21,5 @@ void fall(int data[10][10], int max_x, int max_y);
 int get_max_num(int data[10][10], int max_x, int max_y);
 void print_background(int max_x, int max_y);
 void print_data_block(int data[10][10], int max_x, int max_y);
+void print_data_block_with_border(int data[10][10], int max_x, int max_y);
+void print_background_with_border(int max_x, int max_y);
