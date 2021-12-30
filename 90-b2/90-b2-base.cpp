@@ -340,6 +340,9 @@ void play(int choice)
 		cct_cls();
 
 		print_background(max_x, max_y);
+		print_data_block(data, max_x, max_y);
+
+		cct_gotoxy(0,3*max_y+3);
 
 		system("pause");
 	}

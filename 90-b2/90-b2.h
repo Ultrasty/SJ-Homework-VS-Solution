@@ -20,3 +20,4 @@ int merge(int data[10][10], int max_x, int max_y, int x, int y, int find_result[
 void fall(int data[10][10], int max_x, int max_y);
 int get_max_num(int data[10][10], int max_x, int max_y);
 void print_background(int max_x, int max_y);
+void print_data_block(int data[10][10], int max_x, int max_y);

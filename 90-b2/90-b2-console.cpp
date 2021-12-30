@@ -3,6 +3,29 @@
 
 #include"90-b2.h"
 
+void print_one_block(int number, int x, int y)
+{
+	cct_setcolor(number,COLOR_BLACK);
+	cct_gotoxy(x, y);
+	cout << "©³©¥©·";
+	cct_gotoxy(x, y+1);
+	cout << "©§  ©§";
+	cct_gotoxy(x, y+2);
+	cout << "©»©¥©¿";
+	cct_gotoxy(x + 2, y + 1);
+	cout << number;
+	cct_setcolor();
+}
+
+void print_data_block(int data[10][10], int max_x, int max_y)
+{
+	for (int j = 0; j < max_y; j++) {
+		for (int i = 0; i < max_x; i++) {
+			print_one_block(data[i][j], i * 6 + 4, j * 3 + 2);
+		}
+	}
+}
+
 void print_background(int max_x,int max_y)
 {
 	cout << " ";
@@ -16,7 +39,7 @@ void print_background(int max_x,int max_y)
 	}
 
 	
-	cct_setcolor(COLOR_WHITE, COLOR_BLACK);
+	cct_setcolor(COLOR_HWHITE, COLOR_BLACK);
 	cct_gotoxy(2, 1);
 	cout << "©³";
 
