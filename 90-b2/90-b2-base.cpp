@@ -411,6 +411,7 @@ void play(int choice)
 					cout << "[无效位置]                                       ";
 				}
 				else {
+					print_one_block(data[current_x][current_y], current_x * 8 + 4, current_y * 4 + 2);
 					current_x = (X - 4) / 8;
 					current_y = (Y - 2) / 4;
 					print_one_block(data[current_x][current_y], current_x * 8 + 4, current_y * 4 + 2, COLOR_HWHITE);
@@ -427,23 +428,46 @@ void play(int choice)
 				} 
 			} 
 			else if (ret == CCT_KEYBOARD_EVENT) {
-				cct_gotoxy(0, 4 * max_y + 3);
-				cout << "[当前按键] : ";
+				
 
 				switch (keycode1) {
 					case 224:
 						switch (keycode2) {
 							case KB_ARROW_UP:
-								cout << "上箭头                        ";
+								print_one_block(data[current_x][current_y], current_x * 8 + 4, current_y * 4 + 2);
+								current_y = (current_y + max_y - 1) % max_y;
+								print_one_block(data[current_x][current_y], current_x * 8 + 4, current_y * 4 + 2, COLOR_HWHITE);
+
+								cct_gotoxy(0, 4 * max_y + 3);
+								cout << "[当前按键] : ";
+								cout << "上箭头 [当前选择]:" << char(current_y + 'A') << "行" << setw(2) << current_x + 1 << "列";
 								break;
 							case KB_ARROW_DOWN:
-								cout << "下箭头                        ";
+								print_one_block(data[current_x][current_y], current_x * 8 + 4, current_y * 4 + 2);
+								current_y = (current_y + max_y + 1) % max_y;
+								print_one_block(data[current_x][current_y], current_x * 8 + 4, current_y * 4 + 2, COLOR_HWHITE);
+
+								cct_gotoxy(0, 4 * max_y + 3);
+								cout << "[当前按键] : ";
+								cout << "下箭头 [当前选择]:" << char(current_y + 'A') << "行" << setw(2) << current_x + 1 << "列";
 								break;
 							case KB_ARROW_LEFT:
-								cout << "左箭头                        ";
+								print_one_block(data[current_x][current_y], current_x * 8 + 4, current_y * 4 + 2);
+								current_x = (current_x + max_x - 1) % max_x;
+								print_one_block(data[current_x][current_y], current_x * 8 + 4, current_y * 4 + 2, COLOR_HWHITE);
+
+								cct_gotoxy(0, 4 * max_y + 3);
+								cout << "[当前按键] : ";
+								cout << "左箭头 [当前选择]:" << char(current_y + 'A') << "行" << setw(2) << current_x + 1 << "列";
 								break;
 							case KB_ARROW_RIGHT:
-								cout << "右箭头                        ";
+								print_one_block(data[current_x][current_y], current_x * 8 + 4, current_y * 4 + 2);
+								current_x = (current_x + max_x + 1) % max_x;
+								print_one_block(data[current_x][current_y], current_x * 8 + 4, current_y * 4 + 2, COLOR_HWHITE);
+
+								cct_gotoxy(0, 4 * max_y + 3);
+								cout << "[当前按键] : ";
+								cout << "右箭头 [当前选择]:" << char(current_y + 'A') << "行" << setw(2) << current_x + 1 << "列";
 								break;
 						}
 						break;
