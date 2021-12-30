@@ -3,9 +3,9 @@
 
 #include"90-b2.h"
 
-void print_one_block(int number, int x, int y)
+void print_one_block(int number, int x, int y, int color)
 {
-	cct_setcolor(number,COLOR_BLACK);
+	cct_setcolor(number, color);
 	cct_gotoxy(x, y);
 	cout << "©³©¥©·";
 	cct_gotoxy(x, y+1);

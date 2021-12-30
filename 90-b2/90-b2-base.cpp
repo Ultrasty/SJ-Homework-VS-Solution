@@ -367,4 +367,57 @@ void play(int choice)
 
 		system("pause");
 	}
+
+	if (choice == 7) {
+
+		cct_cls();
+
+		int score = 0;
+
+		input(max_y, 5, 8, "请输入行数(5-8)：\n");
+		input(max_x, 5, 10, "请输入列数(5-10)：\n");
+
+		generate_data(data, max_x, max_y);
+
+		cct_setconsoleborder(8 * max_x + 7, 4 * max_y + 8);
+		cct_cls();
+
+		print_background_with_border(max_x, max_y);
+		print_data_block_with_border(data, max_x, max_y);
+
+		cct_gotoxy(0, 4 * max_y + 3);
+
+		int current_x = 0;
+		int current_y = 0;
+
+		while (1) {
+			
+
+			print_one_block(data[current_x][current_y], current_x * 8 + 4, current_y * 4 + 2, COLOR_HWHITE);
+
+			char c = _getch();
+			//上
+			if (c == 'H') {
+				print_one_block(data[current_x][current_y], current_x * 8 + 4, current_y * 4 + 2);
+				current_y = (current_y + max_y - 1) % max_y;
+			}
+			//下
+			if (c == 'P') {
+				print_one_block(data[current_x][current_y], current_x * 8 + 4, current_y * 4 + 2);
+				current_y = (current_y + max_y + 1) % max_y;
+			}
+			//左
+			if (c == 'K') {
+				print_one_block(data[current_x][current_y], current_x * 8 + 4, current_y * 4 + 2);
+				current_x = (current_x + max_x - 1) % max_x;
+			}
+			//右
+			if (c == 'M') {
+				print_one_block(data[current_x][current_y], current_x * 8 + 4, current_y * 4 + 2);
+				current_x = (current_x + max_x + 1) % max_x;
+			}
+		}
+
+		system("pause");
+	}
 }
