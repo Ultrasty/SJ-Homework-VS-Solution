@@ -620,6 +620,7 @@ void play(int choice)
 
 						find_congener(data, max_x, max_y, current_x, current_y, find_result);
 						if (sum_of_findresult(find_result, max_x, max_y) == 1) {
+							cct_gotoxy(0, 4 * max_y + 3);
 							cout << "目标区域没有可合成的方块！                         " << endl;
 						}
 						else {
@@ -679,6 +680,7 @@ void play(int choice)
 					case 13:
 						find_congener(data, max_x, max_y, current_x, current_y, find_result);
 						if (sum_of_findresult(find_result, max_x, max_y) == 1) {
+							cct_gotoxy(0, 4 * max_y + 3);
 							cout << "目标区域没有可合成的方块！                         " << endl;
 						}
 						else {
@@ -801,7 +803,7 @@ void play(int choice)
 								int temp_score = merge(data, max_x, max_y, current_x, current_y, find_result);
 								score += temp_score;
 								cct_gotoxy(0, 4 * max_y + 4);
-								cout << " 本次得分：" << temp_score << " 总得分：" << score << " 合成目标：" << target <<"      " << endl;
+								cout << " 本次得分：" << temp_score << " 总得分：" << score << " 合成目标：" << target << "      " << endl;
 								if (get_max_num(data, max_x, max_y) >= target) {
 									cout << "您已达到合成目标！您可以继续往更高的目标合成" << endl;
 								}
