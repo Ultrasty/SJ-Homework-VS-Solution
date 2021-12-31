@@ -2,12 +2,16 @@
 #include <fstream>
 #include <cstring>
 #include <conio.h>
+
 using namespace std;
 
-int main(int argc, char* argv[])
+int main()
 {
-    char c = _getch();
-    cout << int(c) << endl;
+    int a[] = { 1,2,3,4 };
+    int *p = a;
+
+    for (int i = 0; i < 6; i++) {
+        p = p + 1;
+    }
     
-    return 0;
 }
